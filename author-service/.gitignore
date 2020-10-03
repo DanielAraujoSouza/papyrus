@@ -104,7 +104,4 @@ dist
 .tern-port
 
 # Database
-*/data
-
-# Key file
-*.Key
+data

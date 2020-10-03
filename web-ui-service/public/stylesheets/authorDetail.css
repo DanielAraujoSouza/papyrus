@@ -1,0 +1,163 @@
+.common {
+  --white-yellow: #fff;
+  --gray-white: #777777;
+  --blue-white: #7d77af;
+  --blue-yellow: #7d77af;
+  --blue-black: #7d77af;
+  --back-gradiente: linear-gradient(
+      180deg,
+      #efefef 180px,
+      #cec9c9 100%
+  );
+  --image-grayscale: 0;
+  --button-back: #38afc3;
+  --button-hover: #176d89;
+}
+
+.high-contrast {
+  --white-yellow: #ff0;
+  --gray-white: #fff;
+  --blue-white: #fff;
+  --blue-yellow: #ff0;
+  --blue-black: #000;
+  --back-gradiente: none;
+  --image-grayscale: 100;
+  --button-back: #000;
+  --button-hover: #ff0;
+}
+
+main {
+  width: 100%;
+  height: auto;
+}
+
+h1, h2 {
+  margin: 0;
+}
+
+.content {
+  background-image: var(--back-gradiente);
+  margin: 15px 0px 15px 0px;
+  padding: 30px 60px 30px 60px;
+  display: flex;
+  flex-direction: row;
+  border-top: #fff 2px solid;
+  border-bottom: #fff 2px solid;
+}
+
+.poster {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  filter: grayscale(var(--image-grayscale));
+}
+
+.details {
+  margin: 0px 30px 0px 30px;
+}
+
+.details-title, .details-books-title {
+  color: var(--gray-white);
+  margin-bottom: 0px;
+}
+
+.details-title span {
+  color: var(--blue-white);
+  font-weight: 400;
+}
+
+.details-subtitle {
+  color: var(--blue-white);
+  font-size: 1em;
+}
+
+.details-subtitle a {
+  text-decoration: none;
+  color: var(--blue-yellow);
+  font-size: 1em;
+}
+
+.details-actions {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+
+.details-actions-button {
+  color: #fff;
+  font-size: 0.9em;
+  font-weight: 600;
+  padding: 11px 14.7px;
+  margin-top: 20px;
+  border-radius: 30px 30px 30px 30px;
+  border: 1px solid var(--white-yellow);
+  background-color: var(--button-back);
+  display: flex;
+  align-items: center;
+  transition: all 0.3s ease;
+}
+
+.details-actions-button:hover {
+  color: var(--white-black);
+  background-color: var(--button-hover);
+}
+
+.details-actions-button + .details-actions-button {
+  margin-left: 10px;
+}
+
+.details-actions-button, .details-actions-button * {
+  cursor: pointer;
+}
+
+.details-actions-button label {
+  margin: 0px 10px;
+}
+
+.details-actions-button span::before {
+  fill: #fff;
+  font-size: 1.25em;
+}
+
+.details-actions-button:hover span {
+  fill: var(--white-black);
+}
+
+.details-books {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  margin-top: 20px;
+}
+
+.details-books-text {
+  color: var(--blue-white);
+  font-size: 1.125em;
+  margin: 4px 0px 4px 0px;
+  flex-wrap: wrap;
+}
+
+.details-books a{
+  text-decoration: none;
+  color: var(--blue-yellow);
+}
+
+.details-description {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  margin-top: 20px;
+}
+
+.details-description-title {
+  color: var(--gray-white);
+  font-weight: 700;
+  margin: 0px;
+}
+
+.details-description-text {
+  color: var(--blue-white);
+  font-size: 1.125em;
+  margin: 4px 0px 4px 0px;
+  flex-wrap: wrap;
+}

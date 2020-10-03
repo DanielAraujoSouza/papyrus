@@ -1,0 +1,53 @@
+<%- contentFor('style') %>
+<link rel="stylesheet" type="text/css" href="/stylesheets/authorDetail.css" />
+
+<%- contentFor('main') %>
+<div class="content-wrapper">
+  <div class="content">
+    <div class="poster">
+      <img alt="<%= title %> poster" src="<%= poster_path %>" />
+    </div>
+    <div class="details">
+      <h1 class="details-title">
+        <%= title %> <span>(<%= contentType %>)</span>
+      </h1>
+      <span class="details-subtitle">
+      <% if (locals.date_of_birth) { %>
+        ✶ <%= date_of_birth %>
+      <% } %>
+      <% if (locals.date_of_death) { %>
+        &nbsp; &bull; &nbsp; † <%= date_of_death %>
+      <% } %>
+      </span>
+      <% if (locals.user && user.role === "ADMIN") { %>
+      <div class="details-actions">
+        <button class="details-actions-button">
+          <span class="mdi mdi-file-edit"></span>
+          <label>Editar</label>
+        </button>
+      </div>
+      <% } %>
+      <% if (locals.books && books.length) { %>
+        <div class="details-books">
+          <h2 class="details-books-title">Títulos</h2>
+          <p class="details-books-text">
+          <% books.forEach((book,key) => { %>
+            <% if (key > 0) { %>
+              &nbsp; &bull; &nbsp;
+            <% }%>
+            <a href="<%= `/${book.type === "printed" ? "book" : "ebook"}/${book._id}` %>"><%= book.title %></a>
+          <% }); %>
+        </div>
+      <% } %>
+      <% if (locals.description) {%> 
+        <div class="details-description">
+          <h2 class="details-description-title">Descrição</h2>
+          <p class="details-description-text"><%= locals.description %></p>
+        </div>
+      <% } %>
+    </div>
+  </div>
+</div>
+
+
+<script type="text/javascript" src="/javascripts/authorDetail.js"></script>
