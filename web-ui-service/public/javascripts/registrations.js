@@ -49,18 +49,17 @@ registrationForm.addEventListener('submit', (e) => {
     .then(jsonResponse => {
       const erros = jsonResponse.erros;
       if (erros !== undefined) {
-        spanName.innerHTML = erros.name !== undefined ? erros.name: "";
-        spanPassword.innerHTML = erros.password !== undefined ? erros.password: "";
-        spanPasswordConfirm.innerHTML = erros.password_confirm !== undefined ? erros.password_confirm: "";
-        spanEmail.innerHTML = erros.email !== undefined ? erros.email: "";
+        spanName.innerHTML = erros.name || "";
+        spanPassword.innerHTML = erros.password || "";
+        spanPasswordConfirm.innerHTML = erros.password_confirm || "";
+        spanEmail.innerHTML = erros.email || "";
       }
-      else {
+      else if (jsonResponse.id != undefined) {
         blockRegistrationForm(true);
         notificationModal.style.display = "block";
         window.setTimeout(() => {
           modalWrapper.style.maxHeight = "300px";
         },300);
-        
       }
     })
     .catch(() => {

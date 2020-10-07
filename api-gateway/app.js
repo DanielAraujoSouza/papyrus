@@ -13,9 +13,9 @@ require('dotenv-safe')
 const helmet = require('helmet');
 
 const webUiRouter = require(`${__dirname}/routes/webUI`);
-const usersRouter = require(`${__dirname}/routes/users`);
-const booksRouter = require(`${__dirname}/routes/books`);
-const ebooksRouter = require(`${__dirname}/routes/ebooks`);
+const usersRouter = require(`${__dirname}/routes/user`);
+const booksRouter = require(`${__dirname}/routes/book`);
+const ebooksRouter = require(`${__dirname}/routes/ebook`);
 const authorRouter = require(`${__dirname}/routes/author`);
 
 const app = express();

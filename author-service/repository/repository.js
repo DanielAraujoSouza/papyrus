@@ -22,6 +22,31 @@ const AuthorSchema = new Schema({
     type: String, 
     required: true
   },
+  commentaries: [{
+    user: {
+      _id: {
+        type: Schema.Types.ObjectId,
+        required: true
+      },
+      name: {
+        type: String, 
+        maxlength: 100,
+        required: true
+      },
+      avatar_path: {
+        type: String
+      }
+    },
+    comment_text: {
+      type: String,
+      required: true
+    },
+    date: {
+      type: Date,
+      default: Date.now
+    }
+  }]
+  
 }, { 
   collection: 'authors',
   autoIndex: false 
@@ -90,6 +115,37 @@ async function insertAuthor(author, callback) {
   });
 };
 
+async function getCommentaryById(authorID, commentId, callback) {
+	mongodb.connect(async err => {
+    Author.findOne (
+      { _id: authorID }, 
+      { 'commentaries': { $elemMatch: { '_id': commentId} } },
+      { $project: { _id: 0 }}
+    )
+    .exec(callback);
+  });
+};
+
+async function removeCommentaryById(authorID, commentId, callback) {
+	mongodb.connect(async err => {
+    Author.findOneAndUpdate (
+      { _id: authorID }, 
+      { $pull: { commentaries: {_id: commentId} }}
+    )
+    .exec(callback);
+  });
+};
+
+async function insertAuthorCommentary(authorID, newComment, callback) {
+	mongodb.connect(async err => {
+    Author.findOneAndUpdate (
+      { _id: authorID }, 
+      { $push: { commentaries: newComment } }
+    )
+    .exec(callback);
+  });
+};
+
 async function disconnect() {
   return await mongodb.disconnect();
 };
@@ -97,6 +153,9 @@ async function disconnect() {
 module.exports = {
   getAuthor,
   getAuthors,
+  getCommentaryById,
+  removeCommentaryById,
+  insertAuthorCommentary,
   findAuthor,
   insertAuthor,
   disconnect

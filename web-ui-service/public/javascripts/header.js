@@ -3,10 +3,9 @@ const navbar = document.getElementById("navbar");
 const searchbarIcon = document.getElementById("searchbar-icon");
 
 if(headerSearchbar) {
-  headerSearchbar.addEventListener("keyup", function (e) {
-    var key = e.which || e.keyCode;
-    if (key == 13) {
-      window.location.href = `/search?q=${this.value}`;
+  headerSearchbar.addEventListener("keydown", function (e) {
+    if (e.key === "Enter") {
+      window.location.href = `/title/search?title=${this.value}`;
     }
   });
   searchbarIcon.addEventListener("click", function (e) {

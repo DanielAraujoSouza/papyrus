@@ -25,6 +25,9 @@ const UserSchema = new Schema({
   role: {
 		type: String,
 		default: "USER"
+  },
+  avatar_path: {
+    type: String
   }
 }, { collection: 'users' });
 

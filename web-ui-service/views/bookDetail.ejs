@@ -17,6 +17,7 @@
         <a href="<%= `/author/${author._id}` %>"><%= author.name %></a>
       <% });%>
       </span>
+      <% if (locals.user) { %>
       <div class="details-actions">
         <button class="details-actions-button">
           <span class="mdi mdi-heart-plus"></span>
@@ -26,13 +27,14 @@
           <span class="mdi mdi-book-plus"></span>
           <label>Reservar</label>
         </button>
-        <% if (locals.user && user.role === "ADMIN") { %>
+        <% if (user.role === "ADMIN") { %>
         <button class="details-actions-button">
           <span class="mdi mdi-file-edit"></span>
           <label>Editar</label>
         </button>
         <% } %>
       </div>
+      <% } %>
       <% if (locals.summary) {%> 
       <div class="details-description">
         <h2 class="details-description-title">Resumo</h2>
@@ -41,9 +43,79 @@
       <% } %>
     </div>
   </div>
-  <% if (locals.user) { %>
-    
-  <% } %>
+  <div class="comments">
+    <h2>Comentários</h2>
+    <% if(locals.user) {%>
+    <div class="new-comment-container">
+      <div class="user-image-wrapper">
+        <% if(user.avatar_path) {%>
+          <img class="user-image" src="<%= user.avatar_path %>">
+        <% } else { %>
+          <span class="mdi mdi-account-circle user-image"></span>
+        <% } %>
+      </div>
+      <div class="new-comment-form-container">
+        <form id="new-comment-form" name="new-comment-form">
+          <label class="new-comment-label" for="new-comment">Faça um comentário!</label>
+          <textarea
+            id="new-comment"
+            name="comment-text"
+            placeholder="O que achou desse <%= type === "printed" ? "Livro" : "eBook" %>?"
+            rows="5"
+          ></textarea>
+          <span class="erro-msg" id="comment-erro"></span>
+          <button 
+            id="new-comment-form-button" 
+            class="new-comment-form-button" 
+            type="submit" 
+            form="new-comment-form"
+            value="Submit"
+            >
+            <label id="comment-button-label">Comentar</label>
+            <span id="comment-button-icon" class="mdi mdi-comment-arrow-right"></span>
+          </button>
+        </form>
+      </div>
+    </div>
+    <% } %>
+    <div class="comments-container">
+      <%  if(!commentaries.length) { %>
+        <p id="no-comments-added-text">Nenhum comentário adicionado.</p>
+      <% } else { %>
+        <% commentaries.forEach(comment => { %>
+        <div class="comment-container" id="<%= `container-${comment._id}` %>">
+          <div class="comment-user-image-wrapper">
+            <% if(comment.user.avatar_path) {%>
+              <img class="comment-user-image" src="<%= comment.user.avatar_path %>">
+            <% } else { %>
+              <span class="mdi mdi-account-circle comment-user-image"></span>
+            <% } %>
+          </div>
+          <div class="comment-content-container">
+            <% if (user && user.role == 'ADMIN') {%>
+              <span
+                id="<%= comment._id %>"
+                class="mdi mdi-delete-forever delete-commentary-icon"
+              ></span>
+              <% } %>
+            <h3><%= comment.user.name %></h3>
+            <% const dateFormat = { day: "2-digit", month: "2-digit", year: "numeric", hour: "numeric", minute: "numeric" };
+              let dateComment = new Date(comment.date)
+              .toLocaleDateString('pt-BR', dateFormat);
+              const dateAndTime = dateComment.split(" ");
+              const dateValues = dateAndTime[0].split("-");
+              dateComment = `${dateValues[2]}-${dateValues[1]}-${dateValues[0]} as ${dateAndTime[1]}`;
+            %>
+            <span class="commentDate"><%= dateComment %></span>
+            <p><%= comment.comment_text %></p>
+          </div>
+        </div>
+        <% }); %>
+      <% } %>
+    </div>
+  </div>
 </div>
 
+<% if (locals.user) { %>
 <script type="text/javascript" src="/javascripts/bookDetail.js"></script>
+<% } %>

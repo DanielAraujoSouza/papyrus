@@ -3,7 +3,6 @@ const fs = require('fs');
 const jwt = require('jsonwebtoken');
 
 function adapterGet (url, user, res, callback){
-  // Faz uma requisição a outro microserviço com token de autenticação
   axios.get(url, { 
     headers: {
       "Authorization" : generateJWT(user)
@@ -32,6 +31,36 @@ function adapterPost(url, user, res, data, callback){
   });
 };
 
+function adapterPut(url, user, res, data, callback){
+  
+  axios.put(url, data, { 
+    headers: {
+      "Authorization" : generateJWT(user)
+    }
+  })
+  .then(resp => {
+    callback(res, resp);
+  })
+  .catch(err => {
+    res.sendStatus(502);
+  });
+};
+
+
+function adapterDelete (url, user, res, callback){
+  axios.delete(url, { 
+    headers: {
+      "Authorization" : generateJWT(user)
+    }
+  })
+  .then(resp => {
+    callback(res, resp);
+  })
+  .catch(err => {
+    res.sendStatus(502);
+  });
+};
+
 function generateJWT (user) {
 
   // Gera o token com a chave assimetrica
@@ -47,5 +76,7 @@ function generateJWT (user) {
 
 module.exports = {
   adapterGet,
-  adapterPost 
+  adapterPost,
+  adapterDelete,
+  adapterPut
 };

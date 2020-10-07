@@ -90,9 +90,23 @@ module.exports = (router) => {
   // Pagina de visualização de livro
   router.get(["/book/:id", "/ebook/:id"], async (req, res) => {
     adapterGet(`${process.env.BOOK_SERVICE}/${req.params.id}`, res, (res, resp) => {
+      const bookInfo = resp.data;
+
+      bookInfo.commentaries = bookInfo.commentaries.sort(function (a, b) {
+        if (a.date > b.date) {
+          return -1;
+        }
+        else if (a.date < b.date) {
+          return 1;
+        }
+        else {
+          return 0;
+        }
+      });
+
       res.render("bookDetail", {
         user: req.user,
-        ...resp.data
+        ...bookInfo
       });
     });
   });

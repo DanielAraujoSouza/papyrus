@@ -36,7 +36,31 @@ const BookSchema = new Schema({
     type: String,
     enum : ['printed','ebook'],
     default: 'printed'
-  }
+  },
+  commentaries: [{
+    user: {
+      _id: {
+        type: Schema.Types.ObjectId,
+        required: true
+      },
+      name: {
+        type: String, 
+        maxlength: 100,
+        required: true
+      },
+      avatar_path: {
+        type: String
+      }
+    },
+    comment_text: {
+      type: String,
+      required: true
+    },
+    date: {
+      type: Date,
+      default: Date.now
+    }
+  }]
 }, { 
   collection: 'books',
   autoIndex: false 
@@ -110,6 +134,37 @@ async function insertBook(book, callback) {
   });
 };
 
+async function getCommentaryById(bookID, commentId, callback) {
+	mongodb.connect(async err => {
+    Book.findOne (
+      { _id: bookID }, 
+      { 'commentaries': { $elemMatch: { '_id': commentId} } },
+      { $project: { _id: 0 }}
+    )
+    .exec(callback);
+  });
+};
+
+async function removeCommentaryById(bookID, commentId, callback) {
+	mongodb.connect(async err => {
+    Book.findOneAndUpdate (
+      { _id: bookID }, 
+      { $pull: { commentaries: {_id: commentId} }}
+    )
+    .exec(callback);
+  });
+};
+
+async function insertBookCommentary(bookID, newComment, callback) {
+	mongodb.connect(async err => {
+    Book.findOneAndUpdate (
+      { _id: bookID }, 
+      { $push: { commentaries: newComment } }
+    )
+    .exec(callback);
+  });
+};
+
 async function disconnect() {
   return await mongodb.disconnect();
 };
@@ -119,5 +174,8 @@ module.exports = {
   getBooksByAuthorID,
   findBook,
   insertBook,
+  getCommentaryById,
+  removeCommentaryById,
+  insertBookCommentary,
   disconnect
 }

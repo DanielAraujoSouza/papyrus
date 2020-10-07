@@ -5,7 +5,13 @@ const multer = require('multer');
 const path = require('path');
 const fs = require('fs');
 const { v4: uuidv4 } = require('uuid');
-
+const adapter = require('../adapter');
+const { adapterPost, adapterPut, adapterDelete } = require(`${__dirname}/../adapter`);
+const { 
+  authenticated,
+  unauthenticated,
+  adminArea
+} = require(`${__dirname}/../authentication/middlewares`);
 // Define a estrategia de armazenamento
 const storage = multer.diskStorage({
   destination: function (req, file, cb) {
@@ -17,14 +23,6 @@ const storage = multer.diskStorage({
   }
 });
 const upload = multer({ storage }).single('poster');
-
-const { adapterPost } = require(`${__dirname}/../adapter`);
-
-const {
-  authenticated,
-  unauthenticated,
-  adminArea
-} = require(`${__dirname}/../authentication/middlewares`);
 
 // Requisição de inclusão de conteudo
 router.post("/insert", adminArea, upload, async (req, res, next) => {
@@ -127,6 +125,68 @@ router.post("/insert", adminArea, upload, async (req, res, next) => {
     adapterPost(`${process.env.BOOK_SERVICE}/create`, req.user, res, data, (res, resp) => {
       res.header(resp.headers);
       res.send(resp.data);
+    });
+  }
+});
+
+// Requisição de inclusão de comentário
+router.put("/:bookId/commentary", authenticated, async (req, res, next) => {
+
+  let erros = {};
+  console.log(req.body)
+  // Verifica se o conteudo é válido
+  if (req.body.comment_text === undefined || req.body.comment_text.length < 4) {
+    erros.comment_text = "O comentário deve conter pelo menos 4 caractéres!";
+  }
+  if (Object.keys(erros).length) {
+    // Envia os erros
+    res.status(400).json({ erros: erros });
+  } else {
+    const data = {
+      user: {
+        _id: req.user._id,
+        name: req.user.name,
+        avatar_path: req.user.avatar_path || "",
+      },
+      comment_text: req.body.comment_text,
+    }
+    const url = `${process.env.BOOK_SERVICE}/${req.params.bookId}/commentary`;
+    adapterPut(url, req.user, res, data, (res, resp) => {
+      console.log('resp.data')
+      console.log(resp.data)
+      res.header(resp.headers);
+      res.send(resp.data);
+    });
+  }
+});
+
+// Requisição de remoção de comentário
+router.delete("/:bookId/commentary/:commentID", authenticated, async (req, res, next) => {
+
+  const url = `${process.env.BOOK_SERVICE}/${req.params.bookId}/commentary/${req.params.commentID}`;
+  function callback(res, resp) {
+    console.log('resp.delete')
+    console.log(resp.data)
+    res.header(resp.headers);
+    res.send(resp.data);
+  };
+
+  console.log(req.user)
+  if (req.user.role === "ADMIN") {
+    adapterDelete(url, req.user, res, callback);
+  }
+  else {
+    axios.get(url)
+    .then(resp => {
+      if(req.user._id === resp.user._id){
+        adapterDelete(url, req.user, res, callback);
+      }
+      else {
+        res.sendStatus(401);
+      }
+    })
+    .catch(err => {
+      res.sendStatus(502);
     });
   }
 });

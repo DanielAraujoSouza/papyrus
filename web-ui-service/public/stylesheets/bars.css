@@ -1,9 +1,11 @@
 .common {
   --black-white: #000;
   --white-black: #fff;
+  --white-yellow: #fff;
   --gray-yellow: #5f6368;
   --gray-black: #5f6368;
   --green-white: #2b828e;
+  --green-yellow: #2b828e;
   --ligthGray-yellow: #f5f5f5;
   --ligthGray-none: #f5f5f5;
   --red-yellow: #c20808;
@@ -21,14 +23,18 @@
   --btn-hover: #016f8d;
   --input-place: none;
   --popup-border: 1px solid #009DAC;
+  --image-grayfilter: none;
+  --orange-none: #DB6800;
 }
 
 .high-contrast {
   --black-white: #fff;
   --white-black: #000;
+  --white-yellow: #ff0;
   --gray-yellow: #ff0;
   --gray-black: #000;
   --green-white: #fff;
+  --green-yellow: #ff0;
   --ligthGray-yellow: #ff0;
   --ligthGray-none: none;
   --red-yellow: #ff0;
@@ -46,12 +52,15 @@
   --btn-hover: none;
   --input-place: #fff;
   --popup-border: 2px solid #fff;
+  --image-grayfilter: grayscale(100);
+  --orange-none: none;
 }
 
 body {
   min-width: 830px;
   font-family: "Source Sans Pro", sans-serif;
   background-color: var(--white-black);
+  margin: 0;
 }
 
 /* nav bar */
@@ -94,18 +103,19 @@ label.erro {
     display: flex;
 }
 
-.logo-m3 {
+.logo-papyrus {
   stroke:none;
   fill-rule:evenodd;
-  fill:#fff;
+  fill: var(--orange-none);
   fill-opacity: 1;
 }
 
-.logo-d {
-  stroke:none;
-  fill-rule:evenodd;
-  fill:var(--input-border);
-  fill-opacity: 1;
+.logo-papyrus-contour {
+  fill: #fff;
+}
+
+.logo:hover .logo-papyrus-contour {
+  fill: var(--white-yellow);
 }
 
 /* nav */
@@ -233,7 +243,7 @@ nav a:hover {
 .search-wrapper .header-input span:hover{
   margin-left: auto;
   padding: 0 4px;
-  background-color: #2cafc3;
+  background-color: var(--green-yellow);
   color: var(--white-black);
   border: none;
   cursor: pointer;
@@ -395,6 +405,27 @@ header .icon2 {
 .form-login .btn:hover, .open-button:hover {
   background-color: var(--btn-hover);
   transition: all 0.3s ease;
+}
+
+.dropdown .user-navbar-icon-wrapper {
+  width: 29px;
+  height: 29px;
+  overflow: hidden;
+  border-radius: 28px;
+  background-color: #fff;
+  cursor: pointer;
+}
+
+.user-navbar-icon-wrapper .user-navbar-icon {
+  font-size: 28px;
+  color: var(--blue-white);
+  width: 28px;
+  line-height: 29px;
+  filter: var(--image-grayfilter);
+}
+
+.dropbtn * {
+  cursor: pointer;
 }
 
 .dropbtn svg circle {

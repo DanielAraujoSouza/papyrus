@@ -1,3 +1,4 @@
+const { ObjectId } = require('mongodb');
 const mongoose = require('mongoose');
 
 module.exports = (router, repository) => {
@@ -40,7 +41,7 @@ module.exports = (router, repository) => {
         res.status(201).json(book);
       }
       else{
-        res.sendStatus(409);
+        res.sendStatus(500);
       }
       repository.disconnect();
     });
@@ -64,6 +65,69 @@ module.exports = (router, repository) => {
       }
       repository.disconnect();
     });
+  });
+
+  // Insere um comentario em um livro
+  router.put('/:bookID/commentary', (req, res, next) => {
+    const newComment = {
+      _id: ObjectId(),
+      user: req.body.user,
+      comment_text:  req.body.comment_text,
+      date: Date.now()
+    };
+    console.log(newComment)
+    repository.insertBookCommentary(req.params.bookID, newComment, (err, book) => {
+      if (!err && book){
+        res.status(201).json(newComment);
+      }
+      else{
+        console.log(err)
+        res.sendStatus(400);
+      }
+      repository.disconnect();
+    });
+  });
+
+  // Retorna um comentario de um livro
+  router.get('/:bookID/commentary/:commentID', (req, res, next) => {
+    if (!ObjectId.isValid(req.params.commentID) || !ObjectId.isValid(req.params.bookID)){
+      res.sendStatus(400);
+    }
+    else {
+      repository.getCommentaryById(req.params.bookID, req.params.commentID, (err, infos) => {
+        if (!err && infos){
+          console.log('commentary')
+          console.log(infos)
+          res.status(201).json(infos.commentaries[0]);
+        }
+        else{
+          console.log(err)
+          res.sendStatus(400);
+        }
+        repository.disconnect();
+      });
+    }
+  });
+
+  // Remove um comentario de um livro
+  router.delete('/:bookID/commentary/:commentID', (req, res, next) => {
+    if (!ObjectId.isValid(req.params.commentID) || !ObjectId.isValid(req.params.bookID)){
+      res.sendStatus(400);
+    }
+    else {
+      repository.removeCommentaryById(req.params.bookID, req.params.commentID, (err, infos) => {
+        if (!err && infos){
+          console.log('commentary')
+          console.log(infos)
+          res.status(201).json(infos);
+        }
+        else {
+          console.log(err)
+          res.sendStatus(400);
+        }
+        repository.disconnect();
+      });
+    }
   });
 
   // Retorna o um livro pelo ID
