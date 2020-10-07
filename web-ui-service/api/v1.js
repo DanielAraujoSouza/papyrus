@@ -1,5 +1,5 @@
 const { adapterGet } = require('../adapter');
-
+const axios = require('axios');
 module.exports = (router) => {
   
   // Página inicial
@@ -52,7 +52,7 @@ module.exports = (router) => {
     });
   });
 
-  // Solicitação formulario de inserção.
+  // Formulario de inserção.
   router.get('/book/insert', async (req, res) => {
 
     adapterGet(process.env.AUTHOR_SERVICE, res, (res, resp) => {
@@ -89,9 +89,15 @@ module.exports = (router) => {
 
   // Pagina de visualização de livro
   router.get(["/book/:id", "/ebook/:id"], async (req, res) => {
-    adapterGet(`${process.env.BOOK_SERVICE}/${req.params.id}`, res, (res, resp) => {
-      const bookInfo = resp.data;
+    const bookGet = axios.get(`${process.env.BOOK_SERVICE}/${req.params.id}`);
+    const favoriteGet = axios.get(`${process.env.USER_SERVICE}/${req.user._id}/favorites/${req.params.id}`);
 
+    Promise.all([bookGet, favoriteGet])
+    .then((results) => {
+      const bookInfo = results[0].data;
+      req.user.favorites = results[1].data;
+      
+      // Ordena os comentarios
       bookInfo.commentaries = bookInfo.commentaries.sort(function (a, b) {
         if (a.date > b.date) {
           return -1;
@@ -103,6 +109,8 @@ module.exports = (router) => {
           return 0;
         }
       });
+
+      console.log(bookInfo)
 
       res.render("bookDetail", {
         user: req.user,
@@ -145,6 +153,22 @@ module.exports = (router) => {
     })
     .catch((e) => {
       res.sendStatus(502);
+    });
+  });
+
+  // Solicitação para a página de favoritos.
+  router.get('/user/favorites/:page?', async (req, res) => {
+    const page = !parseInt(req.params.page) ? 1 : parseInt(req.params.page);
+
+    const url = `${process.env.USER_SERVICE}/${req.user._id}/favorites/page/${page}`;
+    adapterGet(url, res, (res, resp) => {
+      const results = resp.data;
+      res.render("favorites", {
+        title: "Favoritos",
+        user: req.user,
+        currentPage: page,
+        ...results,
+      });
     });
   });
 }

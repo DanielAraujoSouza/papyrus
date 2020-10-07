@@ -188,18 +188,35 @@
         <%= user.name.slice(0,15) %> 
       </div>
       <div class="user-options">
-        <a href="/users/profile">Meu Perfil</a>
-        <a href="/users/gallery">Meus Livros</a>
+        <a  href="/user/profile">
+          <span class="mdi mdi-account"></span>
+          Meu Perfil</a>
+        <a href="/user/favorites">
+          <span class="mdi mdi-cards-heart"></span>
+          Favoritos
+        </a>
       </div>
       <% if(user.role === "ADMIN") { %> 
       <div class="admin-options">
-        <a href="/book/insert">Adicionar Livro</a>
-        <a href="/ebook/insert">Adicionar Ebook</a>
-        <a href="/author/insert">Adicionar Autor</a>
+        <a href="/book/insert">
+          <span class="mdi mdi-book-open-blank-variant"></span>
+          Adicionar Livro
+        </a>
+        <a href="/ebook/insert">
+          <span class="mdi mdi-tablet-cellphone"></span>
+          Adicionar Ebook
+        </a>
+        <a href="/author/insert">
+          <span class="mdi mdi-account-box"></span>
+          Adicionar Autor
+        </a>
       </div>
       <% } %> 
       <div class="logout">
-        <a href="/users/sigout">Sair</a>
+        <a href="/user/sigout">
+          <span class="mdi mdi-exit-run"></span>
+          Sair
+        </a>
       </div>
     </div>
   </div>

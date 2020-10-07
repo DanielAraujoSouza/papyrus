@@ -55,6 +55,14 @@ router.get("/author/:id", async (req, res) => {
   });
 });
 
+// Página de favoritos
+router.get("/user/favorites/:page?", async (req, res) => {
+  adapterGet(`${process.env.WEB_UI_SERVICE}${req.path}`, req.user, res, (res, resp) => {
+    res.header(resp.headers);
+    res.send(resp.data);
+  });
+});
+
 // Direciona para a rota estática
 router.get(/.(images|stylesheets|javascripts)*.(svg|png|js|css)/, async (req, res) => {
   adapterGet(`${process.env.WEB_UI_SERVICE}${req.path}`, req.user, res, (res, resp) => { 

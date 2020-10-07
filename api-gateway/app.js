@@ -42,7 +42,7 @@ app.use(passport.session());
 
 // Routes
 app.use('/', webUiRouter);
-app.use('/users', usersRouter);
+app.use('/user', usersRouter);
 app.use('/book', booksRouter);
 app.use('/ebook', ebooksRouter);
 app.use('/author', authorRouter);

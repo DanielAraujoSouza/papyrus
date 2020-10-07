@@ -165,3 +165,37 @@ if (commentForm) {
     });
   }
 }
+
+const favoriteButton = document.querySelector("button#favorite-button");
+if (favoriteButton) {
+  const favoriteIcon = document.querySelector("span#favorite-icon");
+  const favoriteText = document.querySelector("label#favorite-label");
+
+  favoriteButton.addEventListener('click', e => {
+    favoriteButton.blocked = true;
+    const isAdd = favoriteButton.classList.contains("add");
+
+    fetch(`${window.location.pathname}/favorites`, {
+      method: isAdd ? "PUT" : "DELETE",
+      headers: { "Content-Type": "application/json" },
+    })
+    .then(response => {
+      if(response.status === 401){
+        location.reload();
+      }
+      return response.json();
+    })
+    .then(jsonResponse => {
+      if (Object.keys(jsonResponse).length) {
+        favoriteIcon.classList.remove(isAdd ? "mdi-heart-plus" : "mdi-heart-minus");
+        favoriteIcon.classList.add(isAdd ? "mdi-heart-minus" : "mdi-heart-plus");
+        favoriteButton.classList.remove(isAdd ? "add" : "remove");
+        favoriteButton.classList.add(isAdd ? "remove" : "add");
+        favoriteText.innerHTML = isAdd ? "Desfavoritar" : "Favoritar";
+      }
+    })
+    .finally(() => {
+      favoriteButton.blocked = false;
+    });
+  });
+}

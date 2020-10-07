@@ -19,10 +19,17 @@
       </span>
       <% if (locals.user) { %>
       <div class="details-actions">
-        <button class="details-actions-button">
-          <span class="mdi mdi-heart-plus"></span>
-          <label>Favoritar</label>
-        </button>
+        <% if (user.favorites.length && user.favorites.find(fav => fav._id === _id)) { %>
+          <button id="favorite-button" class="details-actions-button remove">
+            <span id="favorite-icon" class="mdi mdi-heart-minus"></span>
+            <label id="favorite-label" >Desfavoritar</label>
+          </button>
+        <% } else { %>
+          <button id="favorite-button" class="details-actions-button add">
+            <span id="favorite-icon" class="mdi mdi-heart-plus"></span>
+            <label id="favorite-label" >Favoritar</label>
+          </button>
+        <% } %>
         <button class="details-actions-button">
           <span class="mdi mdi-book-plus"></span>
           <label>Reservar</label>

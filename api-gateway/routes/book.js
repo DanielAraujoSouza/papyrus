@@ -5,7 +5,6 @@ const multer = require('multer');
 const path = require('path');
 const fs = require('fs');
 const { v4: uuidv4 } = require('uuid');
-const adapter = require('../adapter');
 const { adapterPost, adapterPut, adapterDelete } = require(`${__dirname}/../adapter`);
 const { 
   authenticated,
@@ -152,8 +151,6 @@ router.put("/:bookId/commentary", authenticated, async (req, res, next) => {
     }
     const url = `${process.env.BOOK_SERVICE}/${req.params.bookId}/commentary`;
     adapterPut(url, req.user, res, data, (res, resp) => {
-      console.log('resp.data')
-      console.log(resp.data)
       res.header(resp.headers);
       res.send(resp.data);
     });
@@ -165,8 +162,6 @@ router.delete("/:bookId/commentary/:commentID", authenticated, async (req, res, 
 
   const url = `${process.env.BOOK_SERVICE}/${req.params.bookId}/commentary/${req.params.commentID}`;
   function callback(res, resp) {
-    console.log('resp.delete')
-    console.log(resp.data)
     res.header(resp.headers);
     res.send(resp.data);
   };
@@ -189,6 +184,31 @@ router.delete("/:bookId/commentary/:commentID", authenticated, async (req, res, 
       res.sendStatus(502);
     });
   }
+});
+
+// Requisição de inclusão de favorito
+router.put("/:bookId/favorites", authenticated, async (req, res, next) => {
+  const data = {
+    book_id: req.params.bookId,
+  }
+  const url = `${process.env.USER_SERVICE}/${req.user._id}/favorites`;
+  adapterPut(url, req.user, res, data, (res, resp) => {
+    console.log('resp.data')
+    console.log(resp.data)
+    res.header(resp.headers);
+    res.send(resp.data);
+  });
+});
+
+// Requisição de remoção de favorito
+router.delete("/:bookId/favorites", authenticated, async (req, res, next) => {
+  const url = `${process.env.USER_SERVICE}/${req.user._id}/favorites/${req.params.bookId}`;
+  adapterDelete(url, req.user, res, (res, resp) => {
+    console.log('resp.data')
+    console.log(resp.data)
+    res.header(resp.headers);
+    res.send(resp.data);
+  });
 });
 
 module.exports = router;

@@ -1,3 +1,6 @@
+const { ObjectId } = require('mongodb');
+const { adapterGet } = require('../adapter');
+
 module.exports = (router, repository) => {
   // Retorna Lista de usuários
   router.get('/', (req, res, next) => {
@@ -73,5 +76,105 @@ module.exports = (router, repository) => {
       }
       repository.disconnect();
     });
+  });
+
+   // Retorna um favorito de um usuario por ID
+  router.get("/:userID/favorites/:favoriteID", async (req, res, next) => {
+    if(ObjectId.isValid(req.params.userID) && ObjectId.isValid(req.params.favoriteID)) {
+      repository.getFavoriteById(req.params.userID, req.params.favoriteID, (err, result) => {
+        if(err) return next(err);
+
+        if (result.favorites){
+          res.json(result.favorites);
+        }
+        else{
+          res.sendStatus(404);
+        }
+        repository.disconnect();
+      });
+    }
+    else {
+      return res.sendStatus(400);
+    }
+  });
+
+  // Retorna favoritos por pagina
+  router.get("/:userID/favorites/page/:page", async (req, res, next) => {
+    const page = Number(req.params.page) || 1;
+
+    repository.getFavoritePerPage(req.params.userID, page, (err, result) => {
+      if(err) return next(err);
+
+      if (Object.keys(result[0])){
+        res.json(result[0]);
+      }
+      else{
+        res.sendStatus(404);
+      }
+      repository.disconnect();
+    });
+  });
+
+  // Adicionar favorito
+  router.put('/:userID/favorites', async (req, res, next) => {
+
+    const userID = req.params.userID;
+
+    repository.getFavoriteById(userID, req.body.book_id, (err, favorite) => {
+
+      if(favorite.legth) {
+        return res.sendStatus(304);
+      }
+      else {
+        // Busca informações do livro
+        adapterGet(`${process.env.BOOK_SERVICE}/${req.body.book_id}`, res, (res, resp)  => {
+          const book = resp.data;
+          const newFavorite = {
+            _id: book._id,
+            title: book.title,
+            poster_path: book.poster_path,
+            authors: book.authors,
+            summary: book.summary,
+            genre: book.genre,
+            type: book.type,
+          };
+
+          repository.addFavorite(userID, newFavorite, (err, result) => {
+            if (!err && result){
+              res.status(201).json({newFavorite});
+            }
+            else{
+              console.log(err)
+              res.sendStatus(400);
+            }
+            repository.disconnect();
+          });
+        });
+      }
+    });
+  });
+
+  // Remover favorito
+  router.delete('/:userID/favorites/:bookID', async (req, res, next) => {
+
+    const userID = req.params.userID;
+    const bookID = req.params.bookID;
+
+    if (ObjectId.isValid(userID) && ObjectId.isValid(bookID)) {
+      repository.removeFavorite(req.params.userID, req.params.bookID, (err, result) => {
+        if (!err && result){
+          res.status(201).json({ _id: bookID });
+        }
+        else{
+          console.log(err)
+          res.sendStatus(400);
+        }
+        repository.disconnect();
+      });
+    }
+    else {
+      res.sendStatus(400);
+    }
+    
   });
 }

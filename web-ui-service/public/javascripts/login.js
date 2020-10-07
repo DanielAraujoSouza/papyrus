@@ -26,7 +26,7 @@ if (btnEntrar) {
     const data = new URLSearchParams(new FormData(loginForm));
     blockLoginPopup(true);
 
-    fetch("/users/sigin", {
+    fetch("/user/sigin", {
       method: "POST",
       body: data,
     })
