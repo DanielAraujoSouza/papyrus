@@ -1,6 +1,7 @@
 const mongoose = require('mongoose');
 const mongodb = require("../config/mongodb");
 const { ObjectId } = require("mongodb");
+const { use } = require('../../api-gateway/routes/user');
 const Schema = mongoose.Schema;
 const ITEMS_PER_PAGE = 15;
 
@@ -165,6 +166,25 @@ async function insertBookCommentary(bookID, newComment, callback) {
   });
 };
 
+async function updateUserCommentary(userID, userInfo, callback) {
+  const setObj = {}
+  if (userInfo.name !== undefined) {
+    setObj["commentaries.$[].user.name"] = userInfo.name;
+  }
+
+  if (userInfo.avatar_path !== undefined) {
+    setObj["commentaries.$[].user.avatar_path"] = userInfo.avatar_path;
+  }
+  console.log(setObj)
+	mongodb.connect(async err => {
+    Book.updateMany (
+      { "commentaries.user._id": userID }, 
+      { $set: setObj }
+    )
+    .exec(callback);
+  });
+};
+
 async function disconnect() {
   return await mongodb.disconnect();
 };
@@ -177,5 +197,6 @@ module.exports = {
   getCommentaryById,
   removeCommentaryById,
   insertBookCommentary,
+  updateUserCommentary,
   disconnect
 }

@@ -19,7 +19,7 @@
       </span>
       <% if (locals.user) { %>
       <div class="details-actions">
-        <% if (user.favorites.length && user.favorites.find(fav => fav._id === _id)) { %>
+        <% if (user.favorites && user.favorites.length && user.favorites.find(fav => fav._id === _id)) { %>
           <button id="favorite-button" class="details-actions-button remove">
             <span id="favorite-icon" class="mdi mdi-heart-minus"></span>
             <label id="favorite-label" >Desfavoritar</label>

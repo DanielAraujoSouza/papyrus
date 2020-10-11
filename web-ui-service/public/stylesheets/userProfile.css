@@ -1,0 +1,249 @@
+.common { 
+  --white-black: #fff;
+  --black-white: #000;
+  --gray-white: #4c4d4d;
+  --red-yellow: #ff0000;
+  --steelblue-white: #028cb3;
+  --steelblue-yellow: #028cb3;
+  --steelblue-none: #028cb3;
+  --alert-sucess-color: #155724;
+  --alert-sucess-back: #d4edda;
+  --alert-danger-color: #721c24;
+  --alert-danger-back: #f8d7da;
+  --alert-warning-color: #856404;
+  --alert-warning-back: #fff3cd;
+  --button-hover: #016f8d;
+  --button-reject: #ff0000;
+  --button-reject-hover: #ff3d3d;
+}
+.high-contrast {
+  --white-black: #000;
+  --black-white: #fff;
+  --red-yellow: #ff0;
+  --gray-white: #fff;
+  --steelblue-none: none;
+  --steelblue-white: #fff;
+  --steelblue-yellow: #ff0;
+  --alert-sucess-color: #000;
+  --alert-sucess-back: #fff;
+  --alert-danger-color: #000;
+  --alert-danger-back: #fff;
+  --alert-warning-color: #000;
+  --alert-warning-back: #000;
+  --button-hover: #ff0;
+  --button-reject: none;
+  --button-reject-hover: #ff0;
+}
+
+* {
+  margin: 0em;
+  padding: 0em;
+}
+
+.content {
+  display: flex;
+  flex-direction: row;
+  padding: 0.625rem 2.5rem 0.625rem 2.5rem;
+}
+
+/* Conteudo Lateral */
+
+aside {
+  margin-right: 1.875rem;
+  margin-top: 5rem;
+  border: 0.0625rem solid #c2c2c2;
+  border-radius: 0.625rem;
+  margin-bottom: auto;
+  width: 15.625rem;
+}
+
+select {
+  background-color: var(--white-black);
+}
+
+.image-header {
+  background-color: var(--steelblue-white);
+  border-radius: 0.625rem 0.625rem 0 0;
+  padding: 0.3125rem;
+}
+
+.image-container {
+  color: var(--black-white);
+  padding: 1.25rem 0.9375rem 1.25rem 0.9375rem;
+}
+
+.user-image-container {
+  border-top: 0.0625rem solid #c2c2c266;
+  padding: 0.5rem 0 1rem 0;
+  margin-top: 0.5rem;
+  display: flex;
+  flex-direction: column;
+}
+
+.user-image-wrapper {
+  align-items: center;
+  text-align: center;
+}
+
+.user-image-wrapper .prev-image {
+  width: 100%;
+  max-height: 15.625rem;
+  font-size:7.5rem;
+  padding: 0.625rem 0;
+  color: var(--gray-white);
+}
+
+.erro-msg {
+  font-size: 0.9em;
+  color: #f00;
+}
+
+/* Alerta */
+
+.alert {
+  
+  width: 100%;
+  max-height: 0px;
+  position: relative;
+  margin-bottom: 1rem;
+  border: 1px solid transparent;
+  border-radius: .25rem;
+  overflow: hidden;
+  align-items: center;
+  display: flex;
+  transition: visibility 0.5s, max-height 0.5s ease-in-out;
+  pointer-events: none;
+  visibility: hidden;
+}
+
+.alert * {
+  margin: .75rem 0 0.75rem 0;
+}
+
+.alert span::before {
+  margin: 0 0.75rem;
+  font-size: 22px;
+}
+
+.alert-success {
+  color: var(--alert-sucess-color);
+  background-color: var(--alert-sucess-back);
+  border-color: var(--alert-sucess-back);
+}
+
+.alert-danger {
+  color: var(--alert-danger-color);
+  background-color: var(--alert-danger-back);
+  border-color: var(--alert-danger-back);
+}
+
+.alert-warning {
+  color: var(--alert-warning-color);
+  background-color: var(--alert-warning-back);
+  border-color: var(--alert-warning-back);
+}
+
+/* Corpo do formulario */
+
+.content-form {
+  margin-left: 30px;
+  margin-left: 1.875rem;
+  width: 50%;
+}
+
+fieldset {
+  border: none;
+  margin: 1.25rem 0 1.25rem 0;
+}
+
+form label {
+  color: var(--gray-white);
+}
+
+.field-container + .field-container, .title-container, .title-container h1 + p{
+  color: var(--black-white);
+  margin-top: 0.625rem;
+}
+
+.title-container {
+  margin-bottom: 0.625rem;
+}
+
+.field-container input[type="text"], 
+.field-container input[type="password"], 
+.field-container input[type="email"] {
+  width: 100%;
+  font-family: "Source Sans Pro", sans-serif;
+  font-size: 1.125rem;
+  color: var(--gray-white);
+  padding: 0.5rem;
+  margin-top: 0.3125rem;
+  border-radius: 0.25rem;
+  border-width: 0.0625rem;
+  border-style: solid;
+  border-color: var(--steelblue-yellow);
+  background-color: var(--white-black);
+}
+
+.btn-submit {
+  color: #fff;
+  border-color: var(--steelblue-yellow);  
+  background-color: var(--steelblue-none);
+}
+
+.btn-submit:hover, .btn-submit:focus {
+  color: var(--white-black);
+  border-color: var(--steelblue-yellow);  
+  background-color: var(--button-hover); 
+}
+
+.btn-remove  {
+  color: #fff;
+  border-color: var(--red-yellow);  
+  background-color: var(--button-reject);
+  margin-top: 10px;
+}
+
+.btn-remove:hover, 
+.btn-remove:focus {
+  color: var(--white-black);
+  border-color: var(--button-reject-hover);  
+  background-color: var(--button-reject-hover) 
+}
+
+button {
+  font-weight: 700;
+  padding-left: 1rem;
+  padding-right: 1rem;
+  padding-top: 0.5rem;
+  padding-bottom: 0.5rem;
+  border-style: solid;
+  border-radius: .375rem;
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+}
+
+button * {
+  pointer-events: none;
+}
+
+button span {
+  font-size: 1.25rem;
+}
+
+button label {
+  color: #fff;
+}
+
+button:hover label {
+  color: var(--white-black);
+}
+
+button span + label {
+  margin-left: 5px;
+}
+
+.hidden {
+  display: none;
+}

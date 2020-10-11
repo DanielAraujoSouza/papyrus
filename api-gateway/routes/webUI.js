@@ -56,7 +56,15 @@ router.get("/author/:id", async (req, res) => {
 });
 
 // Página de favoritos
-router.get("/user/favorites/:page?", async (req, res) => {
+router.get("/user/favorites/:page?", authenticated, async (req, res) => {
+  adapterGet(`${process.env.WEB_UI_SERVICE}${req.path}`, req.user, res, (res, resp) => {
+    res.header(resp.headers);
+    res.send(resp.data);
+  });
+});
+
+// Página do usuario
+router.get("/user/profile", authenticated, async (req, res) => {
   adapterGet(`${process.env.WEB_UI_SERVICE}${req.path}`, req.user, res, (res, resp) => {
     res.header(resp.headers);
     res.send(resp.data);

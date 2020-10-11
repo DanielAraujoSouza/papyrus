@@ -45,17 +45,17 @@ titleForm.addEventListener('submit', e => {
   .then(jsonResponse => {
     const erros = jsonResponse.erros;
     if (erros !== undefined) {
-      spanTitle.innerHTML = erros.title !== undefined ? erros.title: "";
+      spanTitle.innerHTML = erros.title || "";
       if (genre && author) {
-        spanGenre.innerHTML = erros.genre !== undefined ? erros.genre: "";
-        spanAuthor.innerHTML = erros.author !== undefined ? erros.author: "";
+        spanGenre.innerHTML = erros.genre || "";
+        spanAuthor.innerHTML = erros.author || "";
       }
       if (dateDeath && dateBirth){
-        spanDateBirth.innerHTML = erros.date_of_birth !== undefined ? erros.date_of_birth: "";
-        spanDateDeath.innerHTML = erros.date_of_death !== undefined ? erros.date_of_death: "";
+        spanDateBirth.innerHTML = erros.date_of_birth || "";
+        spanDateDeath.innerHTML = erros.date_of_death || "";
       }      
-      spanDescription.innerHTML = erros.description !== undefined ? erros.description: "";
-      spanPoster.innerHTML = erros.poster !== undefined ? erros.poster: "";
+      spanDescription.innerHTML = erros.description || "";
+      spanPoster.innerHTML = erros.poster || "";
       blockTitleForm(false);
     }
     else {

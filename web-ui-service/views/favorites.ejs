@@ -1,89 +1,67 @@
 <%- contentFor('style') %>
-<link rel="stylesheet" type="text/css" href="/stylesheets/titlesList.css" />
+<link rel="stylesheet" type="text/css" href="/stylesheets/favorites.css" />
 
 <%- contentFor('main') %>
 <div id="search-main-wrapper" class="main-wrapper">
-  <aside>
-    <div class="filters-header"><%= title %></div>
-    <div class="filters-container">
-      <h3>Filtros</h3>
-      <form method="GET">
-      <div class="filters">
-        <div class="filter">
-          <input type="radio" id="type" name="type" value="printed" >
-          <span>Livros</span>
-        </div>
-        <div class="filter">
-          <input type="radio" id="type" name="type"  value="ebook">
-          <span>eBook</span>
-        </div>
-        <div class="filter">
-          <input type="radio" id="type" name="type" value="author">
-          <span>Autores</span>
-        </div>
-      </div>
-      <div class="filter-button-wrapper">
-        <button type="submit" value="Submit">Aplicar</button>
-      </div>
-      </form>
-    </div>
-  </aside>
   <div class="content">
     <div class="content-header">
       <span><%= totalCount %> resultados encontrados</span>
     </div>
 
-    <% results.forEach((result) => { %>
-    <div class="content-results">
-      <div class="result-container">
-        <div class="result-photo">
-          <img
-            alt="Capa <%= result.title %>"
-            src="<%= result.poster_path || "/images/book.svg" %>"
-            loading="lazy"
-          />
+    <div class="content-results-container">
+      <% results.forEach((result) => { %>
+        <div class="content-results">
+          <div class="result-container">
+            <div class="result-photo">
+              <img
+                alt="Capa <%= result.title %>"
+                src="<%= result.poster_path || "/images/book.svg" %>"
+                loading="lazy"
+              />
+            </div>
+            <div class="result-content">
+              <a href="<%= `/${result.type === 'printed' ? 'book' : 'ebook'}/${result._id}` %>"
+                ><h3 class="mdi <%= `mdi-${result.type === 'printed' ? 'book-open-blank-variant' : 'tablet-cellphone'}` %>">
+                  <%= result.title %>
+                </h3>
+              </a>
+              <% if (result.authors) {%>
+                <span> Autores:
+                  <% result.authors.forEach((author, key) => { if (key > 0){  %>
+                      <%= `• ${author.name}` %>
+                  <% } else { %>
+                    
+                    <%= author.name %>
+                  <% } }); %>
+                </span>
+                <span> Gênero:
+                  <% result.genre.forEach((name, key) => { if (key > 0){  %>
+                    <%= `, ${name}` %>
+                  <% } else { %>
+                    <%= name %>
+                  <% } }); %>
+                </span>
+              <% } else { 
+                const dateFormat = { day: "2-digit", month: "2-digit", year: "numeric" };
+    
+                let dateBirth = new Date(result.date_of_birth)
+                .toLocaleDateString('pt-BR', dateFormat);
+                dateBirth = `${dateBirth.split("-")[2]}-${dateBirth.split("-")[1]}-${dateBirth.split("-")[0]}`;
+    
+                let dateDeath = new Date(result.date_of_death)
+                  .toLocaleDateString('pt-BR', dateFormat);              
+                dateDeath = `${dateDeath.split("-")[2]}-${dateDeath.split("-")[1]}-${dateDeath.split("-")[0]}`;
+    
+                %>
+                <span> ✶ <%= dateBirth %> <%= result.date_of_death && ` - † ${dateDeath}` %>  </span>
+              <% } %>
+              <p><%= result.summary %></p>
+            </div>
+          </div>
         </div>
-        <div class="result-content">
-          <a href="<%= `/${result.type === 'printed' ? 'book' : 'ebook'}/${result._id}` %>"
-            ><h3 class="mdi <%= `mdi-${result.type === 'printed' ? 'book-open-blank-variant' : 'tablet-cellphone'}` %>">
-              <%= result.title %>
-            </h3>
-          </a>
-          <% if (result.authors) {%>
-            <span> Autores:
-              <% result.authors.forEach((author, key) => { if (key > 0){  %>
-                  <%= `• ${author.name}` %>
-              <% } else { %>
-                
-                <%= author.name %>
-              <% } }); %>
-            </span>
-            <span> Gênero:
-              <% result.genre.forEach((name, key) => { if (key > 0){  %>
-                <%= `, ${name}` %>
-              <% } else { %>
-                <%= name %>
-              <% } }); %>
-            </span>
-          <% } else { 
-            const dateFormat = { day: "2-digit", month: "2-digit", year: "numeric" };
-
-            let dateBirth = new Date(result.date_of_birth)
-            .toLocaleDateString('pt-BR', dateFormat);
-            dateBirth = `${dateBirth.split("-")[2]}-${dateBirth.split("-")[1]}-${dateBirth.split("-")[0]}`;
-
-            let dateDeath = new Date(result.date_of_death)
-              .toLocaleDateString('pt-BR', dateFormat);              
-            dateDeath = `${dateDeath.split("-")[2]}-${dateDeath.split("-")[1]}-${dateDeath.split("-")[0]}`;
-
-            %>
-            <span> ✶ <%= dateBirth %> <%= result.date_of_death && ` - † ${dateDeath}` %>  </span>
-          <% } %>
-          <p><%= result.summary %></p>
-        </div>
-      </div>
+      <% }); %>
     </div>
-    <% }); %>
+
     <div class="content-pagination">
       <% for(var i=1; i <= totalPages; i++) { %> <% if(i == currentPage) {%>
 
@@ -98,5 +76,3 @@
     </div>
   </div>
 </div>
-
-<script type="text/javascript" src="/javascripts/titleList.js"></script>

@@ -22,7 +22,15 @@ const storage = multer.diskStorage({
     cb(null, `${uuidv4()}${path.extname(file.originalname)}`);
   }
 });
-const upload = multer({ storage }).single('poster');
+const upload = multer({
+  storage: storage,
+  fileFilter: function (req, file, cb) {
+    if (RegExp('^image/(gif|png|jpeg|bmp|webp)$').test(file.mimetype)) {
+      return cb(null, true);
+    }
+    cb(null, false);
+  }
+}).single('poster');
 
 // Requisição de inclusão de conteudo
 router.post("/insert", adminArea, upload, async (req, res, next) => {

@@ -141,4 +141,36 @@ module.exports = (router, repository) => {
       repository.disconnect();
     });
   });
+
+  // Atualiza insformações dos usuarios dos comentarios
+  router.put('/commentaries/user/:userID', (req, res, next) => {
+    const userInfo = {};
+
+    if (req.body.name !== undefined) {
+      userInfo.name = req.body.name
+    }
+
+    if (req.body.avatar_path !== undefined) {
+      userInfo.avatar_path = req.body.avatar_path;
+    }
+
+    if (!ObjectId.isValid(req.params.userID)) {
+      res.sendStatus(404);
+    }
+    else if (!Object.keys(userInfo)){
+      res.sendStatus(304);
+    }
+    else {
+      repository.updateUserCommentary(req.params.userID, userInfo, (err, result) => {
+        if (!err && result){
+          res.status(200).json(result);
+        }
+        else{
+          console.log(err)
+          res.sendStatus(400);
+        }
+        repository.disconnect();
+      });
+    }
+  });
 }

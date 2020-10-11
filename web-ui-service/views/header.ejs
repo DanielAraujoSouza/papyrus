@@ -185,7 +185,9 @@
     <% } %>
     <div class="dropdown-content">
       <div class="user-name">
-        <%= user.name.slice(0,15) %> 
+        <span id="dropdown-user-name">
+          <%= user.name.slice(0,15) %> 
+        </span>
       </div>
       <div class="user-options">
         <a  href="/user/profile">

@@ -8,7 +8,7 @@
   --green-yellow: #2b828e;
   --ligthGray-yellow: #f5f5f5;
   --ligthGray-none: #f5f5f5;
-  --red-yellow: #c20808;
+  --darkRed-yellow: #c20808;
   --back-barra: #009DAC;
   --back-footer: #616161;
   --back-cli: #009DAC;
@@ -37,7 +37,7 @@
   --green-yellow: #ff0;
   --ligthGray-yellow: #ff0;
   --ligthGray-none: none;
-  --red-yellow: #ff0;
+  --darkRed-yellow: #ff0;
   --back-barra: #000;
   --back-footer: 000;
   --back-cli: #ff0;
@@ -202,7 +202,7 @@ nav a:hover {
 }
 
 .dropdown-content .logout a:hover {
-  background-color: var(--red-yellow);
+  background-color: var(--darkRed-yellow);
   color: var(--white-black);
   transition: all 0.3s ease;
 }

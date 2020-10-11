@@ -1,5 +1,5 @@
 const { ObjectId } = require('mongodb');
-const { adapterGet } = require('../adapter');
+const { adapterGet, adapterPut } = require('../adapter');
 
 module.exports = (router, repository) => {
   // Retorna Lista de usuários
@@ -63,7 +63,50 @@ module.exports = (router, repository) => {
       repository.disconnect();
     });
   });
+  
+  // Atualiza por ID
+  router.put('/:id', async (req, res, next) => {
+    const userInfo = {};
 
+    if (req.body.name !== undefined) {
+      userInfo.name = req.body.name
+    }
+
+    if (req.body.email !== undefined) {
+      userInfo.email = req.body.email
+    }
+
+    if (req.body.avatar_path !== undefined) {
+      userInfo.avatar_path = req.body.avatar_path;
+    }
+
+    if (req.body.password !== undefined && req.body.password) {
+      const bcrypt = require("bcrypt");
+      userInfo.password = bcrypt.hashSync(req.body.password, 10);
+    }
+    console.log('userInfo')
+    repository.updateUserById(req.params.id, userInfo, (err, user) => {
+      if(err) return next(err);
+      
+      if (user){
+        if (userInfo.name !== undefined || userInfo.avatar_path !== undefined ) {
+          const axios = require('axios');
+          axios.put(`${process.env.AUTHOR_SERVICE}/commentaries/user/${req.params.id}`, userInfo)
+          .catch(e => e);
+  
+          axios.put(`${process.env.BOOK_SERVICE}/commentaries/user/${req.params.id}`, userInfo)
+          .catch(e => e);
+        }
+
+        res.json(user);
+      }
+      else{
+        res.sendStatus(404);
+      }
+      repository.disconnect();
+    });
+  });
+  
   // Verfica se o e-mail já esta cadastrado
   router.get("/:email/available", async (req, res, next) => {
     repository.getUser(req.params.email, (err, user) => {

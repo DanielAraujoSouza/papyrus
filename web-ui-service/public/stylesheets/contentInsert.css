@@ -89,6 +89,7 @@ aside {
   width: 250px;
   width: 15.625rem;
 }
+
 select {
   background-color: var(--white-black);
 }
@@ -187,6 +188,7 @@ textarea {
 .content-form {
   margin-left: 30px;
   margin-left: 1.875rem;
+  width: 50%;
 }
 
 .field-container input[type="text"], 

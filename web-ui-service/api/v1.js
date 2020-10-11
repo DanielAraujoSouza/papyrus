@@ -52,7 +52,7 @@ module.exports = (router) => {
     });
   });
 
-  // Formulario de inserção.
+  // Formulario de inserção de livro.
   router.get('/book/insert', async (req, res) => {
 
     adapterGet(process.env.AUTHOR_SERVICE, res, (res, resp) => {
@@ -65,6 +65,7 @@ module.exports = (router) => {
     });
   });
 
+  // Formulario de inserção de ebook.
   router.get('/ebook/insert', async (req, res) => {
 
     adapterGet(process.env.AUTHOR_SERVICE, res, (res, resp) => {
@@ -77,6 +78,56 @@ module.exports = (router) => {
     });
   });
 
+  // Pagina de visualização de livro
+  router.get(["/book/:id", "/ebook/:id"], async (req, res) => {
+
+    const bookGet = axios.get(`${process.env.BOOK_SERVICE}/${req.params.id}`);
+    const userID = req.user ? req.user._id : "";
+    let favoriteGet = null;
+    if (userID) {
+      console.log('entrou')
+      favoriteGet = axios.get(`${process.env.USER_SERVICE}/${userID}/favorites/${req.params.id}`);
+    }
+  
+    let bookInfo = {};
+    await bookGet.then(resp => {
+      bookInfo = resp.data
+    })
+    .catch(err => {
+      console.log(err)
+    });
+
+    if (favoriteGet) {
+      await favoriteGet.then(resp => {
+        req.user.favorites = resp.data || null;
+      })
+      .catch(err => {
+        console.log(err)
+      });
+    }
+
+    // Ordena os comentarios
+    bookInfo.commentaries = bookInfo.commentaries.sort(function (a, b) {
+      if (a.date > b.date) {
+        return -1;
+      }
+      else if (a.date < b.date) {
+        return 1;
+      }
+      else {
+        return 0;
+      }
+    });
+
+    console.log(bookInfo)
+
+    res.render("bookDetail", {
+      user: req.user,
+      ...bookInfo
+    });
+  });
+  
+  // Formulario de inserção de autor
   router.get('/author/insert', async (req, res) => {
 
     res.render("contentInsert", {
@@ -87,49 +138,24 @@ module.exports = (router) => {
     });
   });
 
-  // Pagina de visualização de livro
-  router.get(["/book/:id", "/ebook/:id"], async (req, res) => {
-    const bookGet = axios.get(`${process.env.BOOK_SERVICE}/${req.params.id}`);
-    const favoriteGet = axios.get(`${process.env.USER_SERVICE}/${req.user._id}/favorites/${req.params.id}`);
-
-    Promise.all([bookGet, favoriteGet])
-    .then((results) => {
-      const bookInfo = results[0].data;
-      req.user.favorites = results[1].data;
-      
-      // Ordena os comentarios
-      bookInfo.commentaries = bookInfo.commentaries.sort(function (a, b) {
-        if (a.date > b.date) {
-          return -1;
-        }
-        else if (a.date < b.date) {
-          return 1;
-        }
-        else {
-          return 0;
-        }
-      });
-
-      console.log(bookInfo)
-
-      res.render("bookDetail", {
-        user: req.user,
-        ...bookInfo
-      });
-    });
-  });
-
-  // Página de visualização de autor
+  // Página de visualização de visualização de perfil
   router.get("/author/:id", async (req, res) => {
     const axios = require('axios');
 
     const authorData = axios.get(`${process.env.AUTHOR_SERVICE}/${req.params.id}`);
-    const Books = axios.get(`${process.env.BOOK_SERVICE}/author/${req.params.id}`);
+    const authorBooks = axios.get(`${process.env.BOOK_SERVICE}/author/${req.params.id}`);
 
-    Promise.all([authorData, Books])
+    Promise.allSettled([authorData, authorBooks])
     .then(results => {
-      const author = results[0].data;
-      const books = results[1].data;
+      let author = {};
+      if (results[0].status === "fulfilled") {
+        author = results[0].value.data;
+      }
+      else {
+        return res.sendStatus(404);
+      }
+      
+      let books = results[1].status === "fulfilled" ? results[1].value.data : null;
 
       if (author.date_of_birth){
         author.date_of_birth = new Date(author.date_of_birth)
@@ -156,6 +182,15 @@ module.exports = (router) => {
     });
   });
 
+  // Solicitação para a página de favoritos.
+  router.get('/user/profile', async (req, res) => {
+
+    res.render("userProfile", {
+      title: "Editar Perfil",
+      user: req.user
+    });
+  });
+  
   // Solicitação para a página de favoritos.
   router.get('/user/favorites/:page?', async (req, res) => {
     const page = !parseInt(req.params.page) ? 1 : parseInt(req.params.page);

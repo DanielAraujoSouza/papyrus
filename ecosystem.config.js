@@ -3,7 +3,8 @@ module.exports = {
     name: "UsersDB",
     script: "mongod --port=27018 --dbpath ./data",
     cwd: "./user-service"
-  },{
+  },
+  {
     name: "UserService",
     script: "node app",
     cwd: "./user-service",
@@ -15,11 +16,13 @@ module.exports = {
     env_production: {
       NODE_ENV: "production",
     }
-  }, {
+  }, 
+  {
     name: "BookDB",
     script: "mongod --port=27019 --dbpath ./data",
     cwd: "./book-service"
-  },{
+  },
+  {
     name: "BookService",
     script: "node app",
     cwd: "./book-service",
@@ -31,11 +34,13 @@ module.exports = {
     env_production: {
       NODE_ENV: "production",
     }
-  }, {
+  }, 
+  {
     name: "AuthorDB",
     script: "mongod --port=27020 --dbpath ./data",
     cwd: "./author-service"
-  }, {
+  }, 
+  {
     name: "AuthorService",
     script: "node app",
     cwd: "./author-service",
@@ -47,7 +52,8 @@ module.exports = {
     env_production: {
       NODE_ENV: "production",
     }
-  }, {
+  }, 
+  {
     name: "WebUiService",
     script: "node app",
     cwd: "./web-ui-service",
@@ -58,23 +64,26 @@ module.exports = {
     env_production: {
       NODE_ENV: "production",
     }
-  }, {
+  }, 
+  {
     name: "GatewayDB",
     script: "mongod --port=27017 --dbpath ./data",
     cwd: "./api-gateway"
-  }, {
+  }, 
+  {
     name: "Gateway",
     script: "node ./bin/www",
     cwd: "./api-gateway",
     watch: true,
-    ignore_watch : ["data"],
+    ignore_watch : ["data", "uploads"],
     env: {
       NODE_ENV: "development",
     },
     env_production: {
       NODE_ENV: "production",
     }
-  },{
+  },
+  {
     name: "SearchService",
     script: "node app",
     cwd: "./search-service",

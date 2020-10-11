@@ -1,9 +1,8 @@
-const bcrypt = require("bcrypt");
 const mongoose = require('mongoose');
 const mongodb = require("../config/mongodb");
 const { ObjectId } = require("mongodb");
 const Schema = mongoose.Schema;
-const ITEMS_PER_PAGE = 15;
+const ITEMS_PER_PAGE = 16;
 
 const UserSchema = new Schema({
   name: {
@@ -172,6 +171,16 @@ async function getFavoritePerPage(UserID, page, callback) {
   });
 };
 
+async function updateUserById(userID, userInfo, callback) {
+	mongodb.connect(async err => {
+    User.updateMany (
+      { _id: userID }, 
+      { $set: userInfo }
+    )
+    .exec(callback);
+  });
+};
+
 async function disconnect() {
   return await mongodb.disconnect();
 };
@@ -185,5 +194,6 @@ module.exports = {
   removeFavorite,
   getFavoriteById,
   getFavoritePerPage,
+  updateUserById,
   disconnect
 }

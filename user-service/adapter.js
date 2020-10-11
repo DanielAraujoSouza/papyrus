@@ -10,6 +10,18 @@ function adapterGet (url, res, callback){
   });
 };
 
+function adapterPut(url, user, res, data, callback){
+  
+  axios.put(url, data)
+  .then(resp => {
+    callback(res, resp);
+  })
+  .catch(err => {
+    res.sendStatus(502);
+  });
+};
+
 module.exports = {
   adapterGet,
+  adapterPut,
 };

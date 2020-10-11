@@ -122,7 +122,7 @@ h1, h2 {
   cursor: pointer;
 }
 
-.details-actions-button label {
+.details-actions-button label, .new-comment-form-button label{
   margin: 0px 10px;
 }
 
