@@ -54,11 +54,9 @@ if (btnEntrar) {
   });
 
   function blockLoginPopup(blocked) {
-    const loadLogin = document.querySelector("img#loadLoginIcon");
-    loadLogin.style.width = blocked ? "auto" : 0;
-    loadLogin.style.height = blocked ? "auto" : 0;
-    loadLogin.style.visibility = blocked ? "visible" : 'hidden';
-    document.querySelector("span#btnLoginText").innerHTML = blocked ? "" : "Entrar";
+    const loadLogin = document.querySelector("span#loadLoginIcon");
+    loadLogin.style.display = blocked ? "block" : 'none';
+    document.querySelector("span#btnLoginText").innerHTML = blocked ? "Entrando..." : "Entrar";
     document.querySelector("button#loginBtn").disabled = blocked;
     document.querySelector("input#loginEmail").disabled = blocked;
     document.querySelector("input#loginPassword").disabled = blocked;

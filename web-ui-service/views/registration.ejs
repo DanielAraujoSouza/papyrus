@@ -3,25 +3,6 @@
 
 <%- contentFor('main') %>
 <div class="content">
-  <div class="slider-wrapper">
-    <ul class="slider">
-      <li>
-        <input type="radio" class="mySlides" id="slide1" name="slide" checked>
-        <label for="slide1"></label>
-        <img src="/images/slide1.png" loading="lazy" alt="Avalie filmes e séries">
-        </li>
-      <li>
-        <input type="radio" class="mySlides" id="slide2" name="slide">
-        <label for="slide2"></label>
-        <img src="/images/slide2.png" loading="lazy" alt="Armazene seus filmes favoritos em sua galeria" />
-        </li>
-        <li>
-          <input type="radio" class="mySlides" id="slide3" name="slide">
-          <label for="slide3"></label>
-          <img src="/images/slide3.png" loading="lazy" alt="Dê sua opinião sobre os títulos"/>
-        </li>
-      </ul>
-  </div>
   <div id="notificationModal" class="modal">
     <div class="modal-wrapper">
       <div class="modal-content">
@@ -61,8 +42,8 @@
       </fieldset>
       <p>Ao clicar no botão "Registrar" abaixo, concordo com os termos de uso e a política de privacidade do Papyrus.</p>
       <button id="regBtn" type="submit" class="btn-submit">
+        <span id="loadRegIcon" class="mdi mdi-loading mdi-spin loading"></span>
         <span id="btnRegText">Registrar</span>
-        <img id="loadRegIcon" class="loading" alt="carregando" src="/images/loading.svg" />
       </button>
     </form>
   </div>

@@ -5,7 +5,11 @@
 <div class="content-wrapper">
   <div class="content">
     <div class="poster">
-      <img alt="<%= title %> poster" src="<%= poster_path %>" />
+      <% if (poster_path !== undefined && poster_path) { %>
+        <img src="<%= poster_path %>" loading="lazy"/>
+      <% } else { %>
+        <span class="mdi mdi-cancel no-image"></span>
+      <% } %>
     </div>
     <div class="details">
       <h1 class="details-title">

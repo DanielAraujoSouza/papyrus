@@ -7,7 +7,6 @@
   --lightGreen-black: #d4edda;
   --steelblue-none: #028cb3;
   --steelblue-yellow: #028cb3;
-  --slider-lbl-opacity: 0.5;
   --img-filter: none;
   --btn-hover: #016f8d;
   --alert-img: invert(23%) sepia(88%) saturate(403%) hue-rotate(82deg) brightness(93%) contrast(95%);
@@ -21,9 +20,8 @@
   --lightGreen-black: #000;
   --steelblue-none: none;
   --steelblue-yellow: #ff0;
-  --slider-lbl-opacity: 1;
   --img-filter: grayscale(1);
-  --btn-hover: none;
+  --btn-hover: #ff0;
   --alert-img: invert(100%) sepia(0%) saturate(2%) hue-rotate(299deg) brightness(113%) contrast(101%);;
 }
 
@@ -42,82 +40,7 @@ html, body {
 .content {
   display: flex;
   flex-direction: row;
-}
-
-/* Slider */
-.slider {
-  display: block;
-  width: 400rem;
-  width: 25rem;
-  height: 562px;
-  height: 35.125rem;
-  margin: auto;
-  position: relative;
-}
-
-.slider li {
-  list-style: none;
-  position: absolute;
-}
-
-.slider img {
-  margin: auto;
-  height: 100%;
-  width: 100%;
-  vertical-align: top;
-  filter: var(--img-filter);
-}
-
-.slider input {
-  display: none;
-}
-
-.slider label {
-  background-color: var(--white-yellow);
-  bottom: 10px;
-  bottom: 0.625rem;
-  cursor: pointer;
-  display: block;
-  height: 10px;
-  height: 0.625rem;
-  position: absolute;
-  width: 10px;
-  width: 0.625rem;
-  z-index: 10;
-  border-radius: 10px;
-  border-radius: 0.625rem;
-  opacity: var(--slider-lbl-opacity);
-}
-
-.slider li:nth-child(1) label {
-  left: 165px;
-  left: 10.3125rem;
-}
-
-.slider li:nth-child(2) label {
-  left: 195px;
-  left: 12.1875rem;
-}
-
-.slider li:nth-child(3) label {
-  left: 225px;
-  left: 14.0625rem;
-}
-
-.slider img {
-  opacity: 0;
-  visibility: hidden;
-}
-
-.slider li input:checked ~ img {
-  opacity: 1;
-  visibility: visible;
-  z-index: 10;
-}
-
-.slider li input:checked ~ label {
-  background-color: #fff;
-  opacity: 1;
+  margin-left: 100px;
 }
 
 /* Formulario */
@@ -195,18 +118,20 @@ input[type="submit"], button {
   color: #fff;
   border-color: var(--steelblue-yellow);  
   background-color: var(--steelblue-none);
+  display: flex;
+  align-items: center;
 }
 
 .btn-submit:hover, .btn-submit:focus{
-  color: #fff;
+  color: var(--white-black);
   border-color: var(--steelblue-yellow);  
   background-color: var(--btn-hover); 
 }
 
 .btn-submit .loading {
-  visibility: hidden;
-  height: 0;
-  width: 0;
+  display: none;
+  font-size: 20px;
+  margin-right: 4px;
 }
 
 .erro-msg {

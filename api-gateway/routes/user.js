@@ -151,6 +151,7 @@ router.put("/profile", authenticated, upload, async (req, res, next) => {
 
 // Solicitação para registrar usuário.
 router.post("/registration", unauthenticated, async (req, res, next) => {
+  console.log('registration')
   // Objeto que armazena as mensagens de erro
   let erros = {};
 

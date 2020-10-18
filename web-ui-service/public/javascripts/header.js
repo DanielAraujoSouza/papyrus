@@ -5,7 +5,7 @@ const searchbarIcon = document.getElementById("searchbar-icon");
 if(headerSearchbar) {
   headerSearchbar.addEventListener("keydown", function (e) {
     if (e.key === "Enter") {
-      window.location.href = `/title/search?title=${this.value}`;
+      window.location.href = `/search?q=${this.value}`;
     }
   });
   searchbarIcon.addEventListener("click", function (e) {

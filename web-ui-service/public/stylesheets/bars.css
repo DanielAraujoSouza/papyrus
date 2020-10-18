@@ -17,7 +17,7 @@
   --clic: rgba(255, 255, 0, 0);
   --clic-sec: rgba(255, 255, 0, 0);
   --clic-menu: rgba(0, 0, 0, 0.33);
-  --clic-icon: invert(21%) sepia(98%) saturate(1906%) hue-rotate(172deg) brightness(100%) contrast(99%);
+  --icon-hover: #197491;
   --header-search-icon: url('/images/movie-search-colorful.svg');
   --input-border: #2cafc3;
   --btn-hover: #016f8d;
@@ -46,14 +46,20 @@
   --clic: #ff0;
   --clic-sec: rgb(179, 179, 0);
   --clic-menu: #ff0;
+  --icon-hover: #ff0;
   --clic-icon: invert(91%) sepia(72%) saturate(5067%) hue-rotate(355deg) brightness(106%) contrast(105%);
   --header-search-icon: url('/images/movie-search-white.svg');
   --input-border: #fff;
-  --btn-hover: none;
+  --btn-hover: #ff0;
   --input-place: #fff;
   --popup-border: 2px solid #fff;
   --image-grayfilter: grayscale(100);
   --orange-none: none;
+}
+
+* {
+  margin: 0;
+  padding: 0;
 }
 
 body {
@@ -136,7 +142,7 @@ nav ul {
 
 .menu {
   color: #ffffff;
-  font-size: 20px;
+  font-size: 1.25em;
   font-weight: 600;
   padding: 10px;
 }
@@ -161,7 +167,7 @@ nav a:hover {
   color: var(--black-white);
   padding: 20px 0;
   text-align: center;
-  font-size: 1.2rem;
+  font-size: 1.2em;
   border-bottom: 1px solid var(--ligthGray-yellow);
 }
 
@@ -240,7 +246,7 @@ nav a:hover {
 }
 
 .search-wrapper .header-input span::before{
-  font-size: 24px;
+  font-size: 1.5em;
   margin-left: auto;
 }
 
@@ -271,10 +277,11 @@ nav a:hover {
 }
 
 .form-login input[type=email], .form-login input[type=password] {
-  width: 200px;;
+  width: 100%;
   padding: 10px 6px;
   border: none;
   border-bottom: 1px solid #818181;
+  font-size: 0.6em;
 }
 
 .form-login input[type=email]::placeholder, .form-login input[type=password]::placeholder {
@@ -284,13 +291,12 @@ nav a:hover {
 /* Acessibilidade */
 
 header .icon {
-  filter: invert(100%) sepia(100%) saturate(0%) hue-rotate(234deg) brightness(108%) contrast(106%);
-  width: 30px;
-  height: 30px;
+  font-size: 1.875em;
+  color: #fff;
 }
 
 header .icon:hover {
-  filter: var(--clic-icon);
+  color: var(--icon-hover);
   transition: all 0.3s ease;
 }
 
@@ -330,14 +336,13 @@ footer {
   position: relative;
   margin-right: 15px;
   display: flex;
-  font-size: 18px;
+  align-items: center;
+  font-size: 1.125em;
   font-weight: 500;
 }
 
 header .icon2 {
-  filter: invert(100%) sepia(100%) saturate(0%) hue-rotate(234deg) brightness(108%) contrast(106%);
-  width: 20px;
-  height: 20px;
+  font-size: 1.25em;
   margin-right: 4px;
 }
 
@@ -353,7 +358,7 @@ header .icon2 {
 }
 .form-label {
   color: var(--black-white);
-  font-size: 18px;
+  font-size: 1.125em;
   font-weight: 600;
   padding: 10px;
 }
@@ -363,6 +368,7 @@ header .icon2 {
   position: fixed;
   top: 54px;
   right: 10px;
+  width: 18.75em;
   background-color: var(--white-black);
   border: var(--popup-border);
   border-radius: 8px;
@@ -388,15 +394,15 @@ header .icon2 {
 }
 
 .form-login .btn .loading {
-  visibility: hidden;
-  height: 0;
-  width: 0;
+  display: none;
+  font-size: 20px;
+  margin-right: 4px;
 }
 
 .form-popup a {
   color: var(--black-white);
   text-decoration:none;
-  font-size: 1rem;
+  font-size: 1em;
 }
 
 .form-popup a:hover {
@@ -407,6 +413,7 @@ header .icon2 {
 
 /* Add some hover effects to buttons */
 .form-login .btn:hover, .open-button:hover {
+  color: var(--white-black);
   background-color: var(--btn-hover);
   transition: all 0.3s ease;
 }
@@ -421,7 +428,7 @@ header .icon2 {
 }
 
 .user-navbar-icon-wrapper .user-navbar-icon {
-  font-size: 28px;
+  font-size: 1.75em;
   color: var(--blue-white);
   width: 28px;
   line-height: 29px;
@@ -449,7 +456,7 @@ header .icon2 {
 }
 .line-division a {
   color: var(--gray-yellow);
-  font-size: 0.8rem;
+  font-size: 0.8em;
   text-align: center;
   background-color: var(--white-black);
   text-decoration: none;

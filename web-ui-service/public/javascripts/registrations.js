@@ -7,27 +7,12 @@ const passwordConfirm = document.querySelector("input#password-confirm");
 const spanPasswordConfirm = document.querySelector("span#password-confirm-erro")
 const email = document.querySelector("input#email");
 const spanEmail = document.querySelector("span#email-erro")
-const loadReg = document.querySelector("img#loadRegIcon");
+const loadReg = document.querySelector("span#loadRegIcon");
 const btnRegText = document.querySelector("span#btnRegText");
 const regBtn = document.querySelector("button#regBtn")
 const btnModal = document.querySelector("button#btnModal");
 const notificationModal = document.querySelector("div#notificationModal");
 const modalWrapper = document.querySelector("div.modal-wrapper");
-
-// Função slide
-let slideIndex = 0;
-showSlides();
-
-function showSlides() {
-  const slides = document.querySelectorAll("input.mySlides");
-  for (let i = 0; i < slides.length; i++) {
-    slides[i].style.display = "none";
-  }
-  slideIndex++;
-  if (slideIndex > slides.length) {slideIndex = 1}
-  slides[slideIndex-1].checked = "checked";
-  setTimeout(showSlides, 5000);
-}
 
 // Valida o formulário antes de enviar
 registrationForm.addEventListener('submit', (e) => {
@@ -36,7 +21,7 @@ registrationForm.addEventListener('submit', (e) => {
   if(nameValidator() && passwordValidator() && passwordConfirmValidator() && emailValidator()){
     const data = new URLSearchParams(new FormData(registrationForm));
     blockRegistrationForm(true);
-    fetch("/users/registration", {
+    fetch("/user/registration", {
       method: "POST",
       body: data,
     })
@@ -71,10 +56,8 @@ registrationForm.addEventListener('submit', (e) => {
 });
 
 function blockRegistrationForm(blocked) {
-  loadReg.style.width = blocked ? "auto" : 0;
-  loadReg.style.height = blocked ? "auto" : 0;
-  loadReg.style.visibility = blocked ? "visible" : 'hidden';
-  btnRegText.innerHTML = blocked ? "" : "Entrar";
+  loadReg.style.display = blocked ? "block" : 'none';
+  btnRegText.innerHTML = blocked ? "Registrando..." : "Registrar";
   regBtn.disabled = blocked;
   name.disabled = blocked;
   password.disabled = blocked;

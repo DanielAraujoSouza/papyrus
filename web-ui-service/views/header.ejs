@@ -148,13 +148,13 @@
 </div>
 <div class="accessibility-wrapper">
   <a class="contrast" href="#">
-    <img class="icon" alt="alto contraste" src="/images/contrast.svg" />
+    <span class="mdi mdi-contrast-circle icon"></span>
   </a>
   <a class="font-size-increase" href="#">
-    <img class="icon" alt="aumentar fonte" src="/images/font-size-increase.svg" />
+    <span class="mdi mdi-format-font-size-increase icon"></span>
   </a>
   <a class="font-size-decrease" href="#">
-    <img class="icon" alt="diminuir fonte" src="/images/font-size-decrease.svg" />
+    <span class="mdi mdi-format-font-size-decrease icon"></span>
   </a>
 </div>
 
@@ -226,8 +226,8 @@
   <%# Se nãoestiver logado %> 
   <%} else { %> 
   <button class="open-button" id="btn-entrar"> 
-    <img class="icon2" alt="entrar" src="/images/account.svg" />
-    <label>Entrar</label>
+    <span class="mdi mdi-account icon2"></span>
+    <span>Entrar</span>
   </button>
   <div class="form-popup" id="loginForm-wrapper">
     <form class="form-login" id="form-login" >
@@ -236,8 +236,8 @@
       <input id="loginPassword" type="password" placeholder="Digite a Senha" name="userPassword" required>
 
       <button id="loginBtn" type="submit" class="btn">
+        <span id="loadLoginIcon" class="mdi mdi-loading mdi-spin loading"></span>
         <span id="btnLoginText">Entrar</span>
-        <img id="loadLoginIcon" class="loading" alt="carregando" src="/images/loading.svg" />
       </button>
       <label class="erro" id="login-erro"></label>
     </form>

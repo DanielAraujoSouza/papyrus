@@ -13,11 +13,11 @@
         <div class="content-results">
           <div class="result-container">
             <div class="result-photo">
-              <img
-                alt="Capa <%= result.title %>"
-                src="<%= result.poster_path || "/images/book.svg" %>"
-                loading="lazy"
-              />
+              <% if (result.poster_path !== undefined && result.poster_path) { %>
+                <img src="<%= result.poster_path %>" loading="lazy"/>
+              <% } else { %>
+                <span class="mdi mdi-cancel no-image"></span>
+              <% } %>
             </div>
             <div class="result-content">
               <a href="<%= `/${result.type === 'printed' ? 'book' : 'ebook'}/${result._id}` %>"

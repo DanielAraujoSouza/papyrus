@@ -18,6 +18,7 @@
   --comment-shadow: #d0d0d0;
   --delete-button: #ff7b7b;
   --delete-button-hover: #ff0000;
+  --no-image-icon: #01b4e4;
 }
 
 .high-contrast {
@@ -36,6 +37,7 @@
   --comment-shadow: none;
   --delete-button: #fff;
   --delete-button-hover: #ff0;
+  --no-image-icon: #fff;
 }
 
 main {
@@ -62,6 +64,11 @@ h1, h2 {
   flex-direction: column;
   justify-content: center;
   filter: grayscale(var(--image-grayscale));
+}
+
+.poster .no-image {
+  color: var(--no-image-icon);
+  font-size: 9em;
 }
 
 .details {
