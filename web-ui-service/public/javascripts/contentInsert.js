@@ -2,7 +2,10 @@ const uploadBtn = document.querySelector("button#upload-btn");
 const uploadInput = document.querySelector("input#upload-input");
 const prevImage = document.querySelector("img#prev-image");
 const prevIcon = document.querySelector("svg#prev-icon");
-const alertSuccess = document.querySelector("div#alertSuccess");
+
+const alertContainer = document.querySelector("div#alert");
+const alertIcon = document.querySelector("span#alert-icon");
+const alertText = document.querySelector("span#alert-text");
 
 const title = document.querySelector("input#title");
 const spanTitle = document.querySelector("span#title-erro");
@@ -20,7 +23,7 @@ const dateBirth = document.querySelector("input#date-of-birth");
 const spanDateBirth = document.querySelector("span#date-birth-erro");
 
 const subBtn = document.querySelector("button#subBtn");
-const loadSub = document.querySelector("img#loadSubIcon");
+const loadSub = document.querySelector("span#loadSubIcon");
 const btnSubText = document.querySelector("span#btnSubText");
 
 const titleForm = document.querySelector("form#titleForm");
@@ -67,29 +70,34 @@ titleForm.addEventListener('submit', e => {
       prevIcon.style.display = "block";
 
       // Notificação de sucesso
-      alertSuccess.style.visibility = 'visible';
-      alertSuccess.style.maxHeight = '40px';
+      showAlert('success', 'Adicionado com sucesso!');
 
-      // Remove a Notificação de sucesso
-      window.setTimeout(() => {
-        alertSuccess.style.maxHeight = '0';
-        alertSuccess.style.visibility = 'hidden';
-      },5000);
       blockTitleForm(false);
     }
   })
   .catch(e => {
     blockTitleForm(false);
-    spanTitle.innerHTML = 'Erro de conexão!';
+    showAlert('danger', 'Erro de conexão!');
   });
 });
 
 function blockTitleForm(blocked) {
-  loadSub.style.width = blocked ? "auto" : 0;
-  loadSub.style.height = blocked ? "auto" : 0;
-  loadSub.style.visibility = blocked ? "visible" : 'hidden';
-  btnSubText.innerHTML = blocked ? "" : "Enviar";
-
+  subBtn.disabled = blocked;
+  uploadBtn.disabled = blocked;
+  
+  if(blocked) {
+    loadSub.classList.remove("mdi-check");
+    loadSub.classList.add("mdi-loading");
+    loadSub.classList.add("mdi-spin");
+    btnSubText.innerHTML = "Adicionando...";
+  }
+  else {
+    loadSub.classList.add("mdi-check");
+    loadSub.classList.remove("mdi-loading");
+    loadSub.classList.remove("mdi-spin");
+    btnSubText.innerHTML = "Adicionar";
+  }
+  
   title.disabled = blocked;
   description.disabled = blocked;
   if (genre && author) {
@@ -147,3 +155,34 @@ uploadInput.addEventListener("change", function(){
     reader.readAsDataURL(file);
   }
 });
+
+function showAlert (type, txt) {
+  // Notificação de sucesso
+  alertContainer.style.visibility = 'visible';
+  alertContainer.style.maxHeight = '40px';
+  alertContainer.classList = "";
+  alertContainer.classList.add("alert");
+  alertIcon.classList = "";
+  alertIcon.classList.add("mdi");
+
+  alertText.innerHTML = txt;
+
+  if (type === "success") {
+    alertIcon.classList.add("mdi-check-circle");
+    alertContainer.classList.add("alert-success");
+  }
+  else if (type === "danger") {
+    alertIcon.classList.add("mdi-close-octagon");
+    alertContainer.classList.add("alert-danger");
+  }
+  else if (type === "warning") {
+    alertIcon.classList.add("mdi-alert");
+    alertContainer.classList.add("alert-warning");
+  }
+
+  // Remove a Notificação de sucesso
+  window.setTimeout(() => {
+    alertContainer.style.maxHeight = '0';
+    alertContainer.style.visibility = 'hidden';
+  },5000);
+}

@@ -66,7 +66,6 @@ form.addEventListener('submit', e => {
     }
   })
   .catch(e => {
-    console.log(e)
     showAlert('danger', 'Erro de conexão!');
   })
   .finally(() => {

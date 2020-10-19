@@ -45,14 +45,17 @@
         </svg>
         <img class="prev-image" id="prev-image" src="" alt="Preview image">
         <br><span class="erro-msg" id="poster-erro"></span>
-        <button id="upload-btn">Escolha uma imagem</button>
+        <button id="upload-btn">
+          <span class="mdi mdi-image-plus icon"></span>
+          <span>Escolha uma imagem</span>
+        </button>
       </div>
     </div>
   </aside>
   <div class="content-form">
-    <div id="alertSuccess" class="alert-success" role="alert">
-      <img src="/images/check-circle.svg">
-      <span><%= contentType %> adicionado com sucesso!</span>
+    <div id="alert" class="alert" role="alert">
+      <span id="alert-icon" class="mdi"></span>
+      <span id="alert-text"></span>
     </div>
     <div class="title-container">
     <h1 class="title"><%= title %> </h1>
@@ -102,8 +105,8 @@
         </div>
       </fieldset>
       <button id="subBtn" type="submit" class="btn-submit">
+        <span id="loadSubIcon" class="mdi mdi-check loading"></span>
         <span id="btnSubText">Adicionar</span>
-        <img id="loadSubIcon" class="loading" alt="carregando" src="/images/loading.svg" />
       </button>
     </form>
   </div>

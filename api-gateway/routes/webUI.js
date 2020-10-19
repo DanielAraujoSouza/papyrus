@@ -72,7 +72,7 @@ router.get("/user/profile", authenticated, async (req, res) => {
 });
 
 // Direciona para a rota estática
-router.get(/.(images|stylesheets|javascripts)*.(svg|png|js|css)/, async (req, res) => {
+router.get(/.(stylesheets|javascripts)*.(js|css)/, async (req, res) => {
   adapterGet(`${process.env.WEB_UI_SERVICE}${req.path}`, req.user, res, (res, resp) => { 
     res.header(resp.headers);
     res.send(resp.data);

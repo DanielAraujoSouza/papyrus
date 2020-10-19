@@ -164,7 +164,7 @@
     
     <% if(user.avatar_path) {%>
       <div class="dropbtn user-navbar-icon-wrapper">
-        <img class="user-navbar-icon" src="<%= user.avatar_path %>">
+        <img class="user-navbar-icon" src="<%= user.avatar_path %>" loading="lazy">
       </div>
     <% } else { %>
       <div class="dropbtn">

@@ -8,7 +8,7 @@ module.exports = (router, repository) => {
       name: req.body.name,
       poster_path: req.body.poster_path,
       date_of_birth: new Date(`${req.body.date_of_birth} 00:00:00`),
-      date_of_death: req.body.date_of_death ? new Date(`${req.body.date_of_birth} 00:00:00`) : "",
+      date_of_death: req.body.date_of_death ? new Date(`${req.body.date_of_death} 00:00:00`) : "",
       description: req.body.description,
     };
     

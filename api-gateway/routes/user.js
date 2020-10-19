@@ -1,11 +1,11 @@
 const passport = require('passport');
 const express = require('express');
 const router = express.Router();
-const { adapterGet, adapterPost, adapterPut } = require(`${__dirname}/../adapter`);
-const { authenticated, unauthenticated } = require(`${__dirname}/../authentication/middlewares`);
+const { adapterGet, adapterPost, adapterPut } = require('../adapter');
+const { authenticated, unauthenticated } = require('../authentication/middlewares');
 const { v4: uuidv4 } = require('uuid');
 const path = require('path');
-const { uploadStrategy, azureUpload } = require("../storage/azure");
+const { uploadStrategy, fileUpload, fileDelete } = require("../storage/azure");
 
 // Solicitação para login
 router.post("/sigin", unauthenticated, (req, res, next) => {
@@ -38,7 +38,7 @@ router.get("/sigout", authenticated, (req, res, next) => {
 });
 
 // Solicitação para atualizar usuário.
-router.put("/profile", authenticated, uploadStrategy, async (req, res, next) => {
+router.put("/profile", authenticated, uploadStrategy.single('avatar'), async (req, res, next) => {
   // Objeto que armazena as mensagens de erro
   let erros = {};
 
@@ -115,12 +115,13 @@ router.put("/profile", authenticated, uploadStrategy, async (req, res, next) => 
     // Se houver modificação envia ao serviço
     if (Object.keys(data).length) {
       adapterPut(`${process.env.USER_SERVICE}/${req.user._id}`, req.user, res, data, (res, resp) => {
+        // Se houver alteração realiza a persistencia
         if (data.avatar_path) {
-          azureUpload(req.file)
+          fileDelete(req.user.avatar_path);
+          fileUpload(req.file);
         }
-        
+
         res.header(resp.headers);
-        console.log(resp.data)
         res.send(resp.data);
       });
     }

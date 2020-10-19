@@ -1,38 +1,14 @@
 const axios = require('axios');
 const express = require('express');
 const router = express.Router();
-const multer = require('multer');
-const path = require('path');
-const fs = require('fs');
-const { v4: uuidv4 } = require('uuid');
 const { adapterPost, adapterPut, adapterDelete } = require(`${__dirname}/../adapter`);
-const { 
-  authenticated,
-  unauthenticated,
-  adminArea
-} = require(`${__dirname}/../authentication/middlewares`);
-// Define a estrategia de armazenamento
-const storage = multer.diskStorage({
-  destination: function (req, file, cb) {
-    cb(null, 'uploads/')
-  },
-  filename: function (req, file, cb) {
-    
-    cb(null, `${uuidv4()}${path.extname(file.originalname)}`);
-  }
-});
-const upload = multer({
-  storage: storage,
-  fileFilter: function (req, file, cb) {
-    if (RegExp('^image/(gif|png|jpeg|bmp|webp)$').test(file.mimetype)) {
-      return cb(null, true);
-    }
-    cb(null, false);
-  }
-}).single('poster');
+const { authenticated, adminArea } = require(`${__dirname}/../authentication/middlewares`);
+const { v4: uuidv4 } = require('uuid');
+const path = require('path');
+const { uploadStrategy, fileUpload } = require("../storage/azure");
 
 // Requisição de inclusão de conteudo
-router.post("/insert", adminArea, upload, async (req, res, next) => {
+router.post("/insert", adminArea, uploadStrategy.single('poster'), async (req, res, next) => {
   // Objeto que armazena as mensagens de erro
   let erros = {};
 
@@ -104,6 +80,12 @@ router.post("/insert", adminArea, upload, async (req, res, next) => {
     }
   }
 
+  if (req.file && req.file.originalname) {
+    req.file.blobName = `${uuidv4()}${path.extname(req.file.originalname)}`;
+    req.file.containerName = "ebookposter";
+    req.file.path = `${process.env.AZURE_STATISTICAL_SERVER}/${req.file.containerName}/${req.file.blobName}`;
+  }
+
   // Verifica se a descrição é válida
   if (req.body.description === undefined || req.body.description < 20) {
     erros.description = "Descrição deve conter pelo menos 20 caractéres!";
@@ -130,6 +112,11 @@ router.post("/insert", adminArea, upload, async (req, res, next) => {
       type: "ebook",
     };
     adapterPost(`${process.env.BOOK_SERVICE}/create`, req.user, res, data, (res, resp) => {
+      // Se houver alteração realiza a persistencia
+      if (req.file && req.file.path) {
+        fileUpload(req.file);
+      }
+      
       res.header(resp.headers);
       res.send(resp.data);
     });

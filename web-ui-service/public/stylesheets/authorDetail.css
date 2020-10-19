@@ -2,6 +2,7 @@
   --white-black: #fff;
   --black-white: #000;
   --white-yellow: #fff;
+  --none-yellow: none;
   --gray-white: #777777;
   --blue-white: #7d77af;
   --blue-yellow: #7d77af;
@@ -25,6 +26,7 @@
   --white-black: #000;
   --black-white: #fff;
   --white-yellow: #ff0;
+  --none-yellow: #ff0;
   --gray-white: #fff;
   --blue-white: #fff;
   --blue-yellow: #ff0;
@@ -64,6 +66,14 @@ h1, h2 {
   flex-direction: column;
   justify-content: center;
   filter: grayscale(var(--image-grayscale));
+  min-width: 160px;
+  max-width: 200px;
+  overflow: hidden;
+  border-radius: 10px;
+}
+
+.poster img {
+  width: 100%;
 }
 
 .poster .no-image {
@@ -109,7 +119,7 @@ h1, h2 {
   padding: 11px 14.7px;
   margin-top: 20px;
   border-radius: 30px 30px 30px 30px;
-  border: 1px solid var(--white-yellow);
+  border: 1px solid var(--none-yellow);
   background-color: var(--button-back);
   display: flex;
   align-items: center;
@@ -204,6 +214,8 @@ h1, h2 {
   height: 50px;
   overflow: hidden;
   border-radius: 52px;
+  display: flex;
+  align-items: center;
 }
 
 .user-image, .comment-user-image {

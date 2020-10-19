@@ -41,6 +41,7 @@ module.exports = (router, repository) => {
         res.status(201).json(book);
       }
       else{
+        console.log(err)
         res.sendStatus(500);
       }
       repository.disconnect();
