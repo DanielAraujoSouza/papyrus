@@ -32,6 +32,10 @@ function start(api, callback){
     res.status(500).send('Something went wrong!');
   });
   app.use(verifJWT);
+  app.use(function(req, res, next) {
+    res.setHeader("Content-Security-Policy", "img-src * 'self' data: https:;");
+    return next();
+  });
   app.use('/web-ui/', router);
   
   api(router);

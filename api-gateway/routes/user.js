@@ -1,35 +1,11 @@
 const passport = require('passport');
 const express = require('express');
 const router = express.Router();
-const multer = require('multer');
-const path = require('path');
-const fs = require('fs');
+const { adapterGet, adapterPost, adapterPut } = require(`${__dirname}/../adapter`);
+const { authenticated, unauthenticated } = require(`${__dirname}/../authentication/middlewares`);
 const { v4: uuidv4 } = require('uuid');
-const { adapterGet, adapterPost, adapterPut, adapterDelete } = require(`${__dirname}/../adapter`);
-const { 
-  authenticated,
-  unauthenticated,
-  adminArea
-} = require(`${__dirname}/../authentication/middlewares`);
-// Define a estrategia de armazenamento
-const storage = multer.diskStorage({
-  destination: function (req, file, cb) {
-    cb(null, 'uploads/')
-  },
-  filename: function (req, file, cb) {
-    
-    cb(null, `${uuidv4()}${path.extname(file.originalname)}`);
-  }
-});
-const upload = multer({
-  storage: storage,
-  fileFilter: function (req, file, cb) {
-    if (RegExp('^image/(gif|png|jpeg|bmp|webp)$').test(file.mimetype)) {
-      return cb(null, true);
-    }
-    cb(null, false);
-  }
-}).single('avatar');
+const path = require('path');
+const { uploadStrategy, azureUpload } = require("../storage/azure");
 
 // Solicitação para login
 router.post("/sigin", unauthenticated, (req, res, next) => {
@@ -62,7 +38,7 @@ router.get("/sigout", authenticated, (req, res, next) => {
 });
 
 // Solicitação para atualizar usuário.
-router.put("/profile", authenticated, upload, async (req, res, next) => {
+router.put("/profile", authenticated, uploadStrategy, async (req, res, next) => {
   // Objeto que armazena as mensagens de erro
   let erros = {};
 
@@ -122,8 +98,10 @@ router.put("/profile", authenticated, upload, async (req, res, next) => {
     }
 
     // Verifica se foi enviada uma nova imagem ou para remover
-    if (req.file && req.file.path) {
-      data.avatar_path = req.file.path;
+    if (req.file && req.file.originalname) {
+      req.file.blobName = `${uuidv4()}${path.extname(req.file.originalname)}`;
+      req.file.containerName = "avatar";
+      data.avatar_path = `${process.env.AZURE_STATISTICAL_SERVER}/${req.file.containerName}/${req.file.blobName}`;
     }
     else if (req.body.remove_img !== undefined && req.body.remove_img) {
       data.avatar_path = "";
@@ -137,6 +115,10 @@ router.put("/profile", authenticated, upload, async (req, res, next) => {
     // Se houver modificação envia ao serviço
     if (Object.keys(data).length) {
       adapterPut(`${process.env.USER_SERVICE}/${req.user._id}`, req.user, res, data, (res, resp) => {
+        if (data.avatar_path) {
+          azureUpload(req.file)
+        }
+        
         res.header(resp.headers);
         console.log(resp.data)
         res.send(resp.data);

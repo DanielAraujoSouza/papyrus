@@ -42,6 +42,7 @@ function adapterPut(url, user, res, data, callback){
     callback(res, resp);
   })
   .catch(err => {
+    console.log(err)
     res.sendStatus(502);
   });
 };

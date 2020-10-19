@@ -6,7 +6,8 @@ function adapterGet (url, res, callback){
     callback(res, resp);
   })
   .catch(err => {
-    res.sendStatus(err.response.status);
+    console.log(err)
+    res.sendStatus(502);
   });
 };
 

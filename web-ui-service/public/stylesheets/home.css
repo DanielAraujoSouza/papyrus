@@ -3,7 +3,6 @@
   --white-black: #fff;
   --gray-white: #777777;
   --blue-white: #7d77af;
-  --back-image: url("/images/7.jpg");
   --back-gradiente: linear-gradient(
       180deg,
       #efefef 180px,
@@ -23,7 +22,6 @@
   --white-black: #000;
   --gray-white: #fff;
   --blue-white: #fff;
-  --back-image: #000;
   --back-gradiente: #000;
   --btn-submit: #000;
   --hover-btn: #ff0;
@@ -55,7 +53,6 @@ main {
   font-weight: bold;
 }
 .content-wrapper {
-  background-image: var(--back-image);
   background-size: cover;
   border-radius: 30px 30px 30px 30px;
   margin: 3em 0em 3em 0em;
