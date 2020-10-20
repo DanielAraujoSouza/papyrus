@@ -1,9 +1,5 @@
 module.exports = {
-  apps : [{
-    name: "UsersDB",
-    script: "mongod --port=27018 --dbpath ./data",
-    cwd: "./user-service"
-  },
+  apps : [
   {
     name: "UserService",
     script: "node app",
@@ -18,11 +14,6 @@ module.exports = {
     }
   }, 
   {
-    name: "BookDB",
-    script: "mongod --port=27019 --dbpath ./data",
-    cwd: "./book-service"
-  },
-  {
     name: "BookService",
     script: "node app",
     cwd: "./book-service",
@@ -34,11 +25,6 @@ module.exports = {
     env_production: {
       NODE_ENV: "production",
     }
-  }, 
-  {
-    name: "AuthorDB",
-    script: "mongod --port=27020 --dbpath ./data",
-    cwd: "./author-service"
   }, 
   {
     name: "AuthorService",
@@ -66,11 +52,6 @@ module.exports = {
     }
   }, 
   {
-    name: "GatewayDB",
-    script: "mongod --port=27017 --dbpath ./data",
-    cwd: "./api-gateway"
-  }, 
-  {
     name: "Gateway",
     script: "node ./bin/www",
     cwd: "./api-gateway",
@@ -95,7 +76,6 @@ module.exports = {
       NODE_ENV: "production",
     }
   }],
-
   deploy : {
     production : {
       user : 'SSH_USERNAME',

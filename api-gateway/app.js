@@ -1,4 +1,3 @@
-const createError = require('http-errors');
 const express = require('express');
 const cookieParser = require('cookie-parser');
 const logger = require('morgan');
@@ -31,7 +30,10 @@ require(`${__dirname}/authentication`)(passport);
 app.use(session({
   store: new MongoStore({
     url: process.env.MONGO_CONNECTION,
-    ttl: 30 * 60 // = 30 minutos de sessão
+    dbName: process.env.MONGO_DB,
+    ttl: 30 * 60, // = 30 minutos de sessão
+    autoRemove: 'interval',
+    autoRemoveInterval: 1
   }),
   secret: process.env.SESSION_SECRET,
   resave: false,

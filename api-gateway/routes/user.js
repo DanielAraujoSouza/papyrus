@@ -16,8 +16,7 @@ router.post("/sigin", unauthenticated, (req, res, next) => {
     }
     // E-mail ou senha incorretos
     if (!user) {
-      return res
-        .status(401)
+      return res.status(401)
         .json({ status: "erro", message: "E-mail ou senha incorretos" });
     }
     // Cria a sessão

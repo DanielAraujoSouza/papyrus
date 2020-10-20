@@ -95,7 +95,7 @@ aside {
 
 .filters-container h3 {
   color: var(--text);
-  margin-bottom: 6px;
+  margin: 10px 0;
   display: flex;
   flex-direction: column;
 }
