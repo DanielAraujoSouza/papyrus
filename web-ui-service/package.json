@@ -7,7 +7,7 @@
   "scripts": {
     "start": "node app",
     "devstart": "nodemon app",
-    "serverstart": "DEBUG=api-gateway:* npm run devstart",
+    "serverstart": "DEBUG=web-ui-service:* npm run devstart",
     "test": "node app.test | tap-spec"
   },
   "dependencies": {

@@ -19,7 +19,7 @@ function start(api, repository, callback){
   
   api(router, repository);
 
-  server = app.listen(parseInt(process.env.SERVER_PORT), () => callback(null, server));
+  server = app.listen(parseInt(process.env.PORT), () => callback(null, server));
 }
 
 function stop(){

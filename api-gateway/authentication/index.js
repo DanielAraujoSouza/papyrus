@@ -10,7 +10,6 @@ const axios = require('axios');
 module.exports = (passport) => {
   
   function findUser(param, callback) {
-    console.log(param)
     axios.get(`${process.env.USER_SERVICE}/${param}`)
     .then((resp) => {
       callback(null, resp.data);

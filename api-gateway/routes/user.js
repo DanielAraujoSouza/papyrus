@@ -21,7 +21,6 @@ router.post("/sigin", unauthenticated, (req, res, next) => {
     }
     // Cria a sessão
     req.login(user, function (err) {
-      console.log('osk')
       if (err) {
         return next(err);
       }
@@ -73,7 +72,6 @@ router.put("/profile", authenticated, uploadStrategy.single('avatar'), async (re
     const axios = require('axios');
     const emailResp = await axios.get(`${process.env.USER_SERVICE}/${req.body.email}/available`);
     if (emailResp.data.available !== undefined &&  emailResp.data.available === "false") {
-      console.log(emailResp.data)
       erros.email = "Email j cadastrado";
     }
     
@@ -81,7 +79,6 @@ router.put("/profile", authenticated, uploadStrategy.single('avatar'), async (re
   
   if (Object.keys(erros).length) {
     // Renderiza página se houver erros
-    console.log(erros)
     res.status(400).json({ erros: erros });
   } else {
     
@@ -133,7 +130,6 @@ router.put("/profile", authenticated, uploadStrategy.single('avatar'), async (re
 
 // Solicitação para registrar usuário.
 router.post("/registration", unauthenticated, async (req, res, next) => {
-  console.log('registration')
   // Objeto que armazena as mensagens de erro
   let erros = {};
 

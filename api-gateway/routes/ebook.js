@@ -127,7 +127,6 @@ router.post("/insert", adminArea, uploadStrategy.single('poster'), async (req, r
 router.put("/:bookId/commentary", authenticated, async (req, res, next) => {
 
   let erros = {};
-  console.log(req.body)
   // Verifica se o conteudo é válido
   if (req.body.comment_text === undefined || req.body.comment_text.length < 4) {
     erros.comment_text = "O comentário deve conter pelo menos 4 caractéres!";
@@ -146,8 +145,6 @@ router.put("/:bookId/commentary", authenticated, async (req, res, next) => {
     }
     const url = `${process.env.BOOK_SERVICE}/${req.params.bookId}/commentary`;
     adapterPut(url, req.user, res, data, (res, resp) => {
-      console.log('resp.data')
-      console.log(resp.data)
       res.header(resp.headers);
       res.send(resp.data);
     });
@@ -159,13 +156,10 @@ router.delete("/:bookId/commentary/:commentID", authenticated, async (req, res, 
 
   const url = `${process.env.BOOK_SERVICE}/${req.params.bookId}/commentary/${req.params.commentID}`;
   function callback(res, resp) {
-    console.log('resp.delete')
-    console.log(resp.data)
     res.header(resp.headers);
     res.send(resp.data);
   };
 
-  console.log(req.user)
   if (req.user.role === "ADMIN") {
     adapterDelete(url, req.user, res, callback);
   }
@@ -192,8 +186,6 @@ router.put("/:bookId/favorites", authenticated, async (req, res, next) => {
   }
   const url = `${process.env.USER_SERVICE}/${req.user._id}/favorites`;
   adapterPut(url, req.user, res, data, (res, resp) => {
-    console.log('resp.data')
-    console.log(resp.data)
     res.header(resp.headers);
     res.send(resp.data);
   });
@@ -203,8 +195,6 @@ router.put("/:bookId/favorites", authenticated, async (req, res, next) => {
 router.delete("/:bookId/favorites", authenticated, async (req, res, next) => {
   const url = `${process.env.USER_SERVICE}/${req.user._id}/favorites/${req.params.bookId}`;
   adapterDelete(url, req.user, res, (res, resp) => {
-    console.log('resp.data')
-    console.log(resp.data)
     res.header(resp.headers);
     res.send(resp.data);
   });

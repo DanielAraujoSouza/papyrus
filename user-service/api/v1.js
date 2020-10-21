@@ -14,7 +14,6 @@ module.exports = (router, repository) => {
   // Cria um usuário
   router.post('/create', async (req, res, next) => {
       const bcrypt = require("bcrypt");
-      console.log(req.body)
       const userInfo = {
         name: req.body.name,
         email: req.body.email,
@@ -84,7 +83,6 @@ module.exports = (router, repository) => {
       const bcrypt = require("bcrypt");
       userInfo.password = bcrypt.hashSync(req.body.password, 10);
     }
-    console.log('userInfo')
     repository.updateUserById(req.params.id, userInfo, (err, user) => {
       if(err) return next(err);
       
@@ -187,7 +185,6 @@ module.exports = (router, repository) => {
               res.status(201).json({newFavorite});
             }
             else{
-              console.log(err)
               res.sendStatus(400);
             }
             repository.disconnect();
@@ -209,7 +206,6 @@ module.exports = (router, repository) => {
           res.status(201).json({ _id: bookID });
         }
         else{
-          console.log(err)
           res.sendStatus(400);
         }
         repository.disconnect();

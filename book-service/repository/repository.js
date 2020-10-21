@@ -1,7 +1,6 @@
 const mongoose = require('mongoose');
 const mongodb = require("../config/mongodb");
 const { ObjectId } = require("mongodb");
-const { use } = require('../../api-gateway/routes/user');
 const Schema = mongoose.Schema;
 const ITEMS_PER_PAGE = 15;
 
@@ -68,11 +67,11 @@ const BookSchema = new Schema({
 });
 
 BookSchema.index({
-  title: 'text', 
-  "authors.name": 'text', 
-  summary: 'text', 
-  genre: 'text',
-  type: 'text'
+  "title": "text", 
+  "authors.name": "text", 
+  "summary": "text", 
+  "genre": "text",
+  "type": "text"
 },
 { 
   default_language: 'pt' 
@@ -175,7 +174,6 @@ async function updateUserCommentary(userID, userInfo, callback) {
   if (userInfo.avatar_path !== undefined) {
     setObj["commentaries.$[].user.avatar_path"] = userInfo.avatar_path;
   }
-  console.log(setObj)
 	mongodb.connect(async err => {
     Book.updateMany (
       { "commentaries.user._id": userID }, 

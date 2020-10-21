@@ -33,9 +33,8 @@ module.exports = (router) => {
       searchType = "author";
     }
 
-    const searchName = req.query.q || '';
-    const searchParams = `?type=${searchType}`
-    .concat(searchName && `&q=${searchName}`);
+    let searchName = req.query.q || '';
+    searchName = String(searchName).replace(/\//g,"");
 
     const url = `${process.env.SEARCH_SERVICE}/${searchType}/${searchName}`;
     adapterGet(url, res, (res, resp) => {
@@ -85,7 +84,6 @@ module.exports = (router) => {
     const userID = req.user ? req.user._id : "";
     let favoriteGet = null;
     if (userID) {
-      console.log('entrou')
       favoriteGet = axios.get(`${process.env.USER_SERVICE}/${userID}/favorites/${req.params.id}`);
     }
   
@@ -118,8 +116,6 @@ module.exports = (router) => {
         return 0;
       }
     });
-
-    console.log(bookInfo)
 
     res.render("bookDetail", {
       user: req.user,
@@ -158,15 +154,19 @@ module.exports = (router) => {
       let books = results[1].status === "fulfilled" ? results[1].value.data : null;
 
       if (author.date_of_birth){
-        author.date_of_birth = new Date(author.date_of_birth)
-        .toLocaleDateString('pt-BR', { day: "2-digit", month: "2-digit", year: "numeric" });
-        author.date_of_birth = `${author.date_of_birth.split("-")[2]}-${author.date_of_birth.split("-")[1]}-${author.date_of_birth.split("-")[0]}`;
+        const dt = new Date(author.date_of_birth)
+        const day = dt.getDate();
+        const month = dt.getMonth() + 1;
+        const year = dt.getFullYear();
+        author.date_of_birth = `${day < 10 ? `0${day}` : day}-${month < 10 ? `0${month}` : month}-${year}`;
       }
 
       if (author.date_of_death){
-        author.date_of_death = new Date(author.date_of_death)
-        .toLocaleDateString('pt-BR', { day: "2-digit", month: "2-digit", year: "numeric" });
-        author.date_of_death = `${author.date_of_death.split("-")[2]}-${author.date_of_death.split("-")[1]}-${author.date_of_death.split("-")[0]}`;
+        const dt = new Date(author.date_of_death)
+        const day = dt.getDate();
+        const month = dt.getMonth() + 1;
+        const year = dt.getFullYear();
+        author.date_of_death = `${day < 10 ? `0${day}` : day}-${month < 10 ? `0${month}` : month}-${year}`;
       }
 
       res.render("authorDetail", {

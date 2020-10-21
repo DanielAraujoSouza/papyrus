@@ -52,7 +52,7 @@ const AuthorSchema = new Schema({
   autoIndex: false 
 });
 
-AuthorSchema.index({ name: 'text', description: 'text'}, {
+AuthorSchema.index({ "name": "text", "description": "text"}, {
   default_language: 'pt' 
 });
 
@@ -155,7 +155,6 @@ async function updateUserCommentary(userID, userInfo, callback) {
   if (userInfo.avatar_path !== undefined) {
     setObj["commentaries.$[].user.avatar_path"] = userInfo.avatar_path;
   }
-  console.log(setObj)
 	mongodb.connect(async err => {
     Author.updateMany (
       { "commentaries.user._id": userID }, 

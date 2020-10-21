@@ -81,7 +81,6 @@ router.post("/insert", adminArea, uploadStrategy.single('poster'), async (req, r
 router.put("/:authorId/commentary", authenticated, async (req, res, next) => {
 
   let erros = {};
-  console.log(req.body)
   // Verifica se o conteudo é válido
   if (req.body.comment_text === undefined || req.body.comment_text.length < 4) {
     erros.comment_text = "O comentário deve conter pelo menos 4 caractéres!";
@@ -100,8 +99,6 @@ router.put("/:authorId/commentary", authenticated, async (req, res, next) => {
     }
     const url = `${process.env.AUTHOR_SERVICE}/${req.params.authorId}/commentary`;
     adapterPut(url, req.user, res, data, (res, resp) => {
-      console.log('resp.data')
-      console.log(resp.data)
       res.header(resp.headers);
       res.send(resp.data);
     });
@@ -113,13 +110,10 @@ router.delete("/:authorId/commentary/:commentID", authenticated, async (req, res
 
   const url = `${process.env.AUTHOR_SERVICE}/${req.params.authorId}/commentary/${req.params.commentID}`;
   function callback(res, resp) {
-    console.log('resp.delete')
-    console.log(resp.data)
     res.header(resp.headers);
     res.send(resp.data);
   };
 
-  console.log(req.user)
   if (req.user.role === "ADMIN") {
     adapterDelete(url, req.user, res, callback);
   }

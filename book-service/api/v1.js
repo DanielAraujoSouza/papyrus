@@ -41,7 +41,6 @@ module.exports = (router, repository) => {
         res.status(201).json(book);
       }
       else{
-        console.log(err)
         res.sendStatus(500);
       }
       repository.disconnect();
@@ -50,12 +49,26 @@ module.exports = (router, repository) => {
 
   // Pesquisa livros
   router.get('/:type?/find/(:searchName)?/:page?', (req, res, next) => {
+    // Contornando supressão de paramaetros do Azure
+    const params = req.originalUrl.split('/');
+    let page = 1;
+    let searchParam = "";
+    if (RegExp("^/books/[^/]*/find/[^/]*/[0-9]*$").test(req.originalUrl)){
+      searchParam = params[4];
+      page = params[5];
+    }
+    else if (RegExp("^/books/[^/]*/find/[0-9]*$").test(req.originalUrl)){
+      searchParam = "";
+      page = params[4];
+    }
+    else if (RegExp("^/books/[^/]*/find/[^/]*$").test(req.originalUrl)){
+      searchParam = params[4];
+    }
 
-    const page = parseInt(req.params.page) || 1;
+    page = page || 1;
     const type = req.params.type === 'ebook' ? 'ebook' : 'printed';
-    const param = req.params.searchName || "";
-
-    repository.findBook(type, param, page, (err, books) => {
+    
+    repository.findBook(type, searchParam, page, (err, books) => {
       if (err) { return next(err); }
 
       if (books){
@@ -76,13 +89,11 @@ module.exports = (router, repository) => {
       comment_text:  req.body.comment_text,
       date: Date.now()
     };
-    console.log(newComment)
     repository.insertBookCommentary(req.params.bookID, newComment, (err, book) => {
       if (!err && book){
         res.status(200).json(newComment);
       }
       else{
-        console.log(err)
         res.sendStatus(400);
       }
       repository.disconnect();
@@ -97,12 +108,9 @@ module.exports = (router, repository) => {
     else {
       repository.getCommentaryById(req.params.bookID, req.params.commentID, (err, infos) => {
         if (!err && infos){
-          console.log('commentary')
-          console.log(infos)
           res.status(200).json(infos.commentaries[0]);
         }
         else{
-          console.log(err)
           res.sendStatus(400);
         }
         repository.disconnect();
@@ -118,12 +126,9 @@ module.exports = (router, repository) => {
     else {
       repository.removeCommentaryById(req.params.bookID, req.params.commentID, (err, infos) => {
         if (!err && infos){
-          console.log('commentary')
-          console.log(infos)
           res.status(200).json(infos);
         }
         else {
-          console.log(err)
           res.sendStatus(400);
         }
         repository.disconnect();
@@ -177,7 +182,6 @@ module.exports = (router, repository) => {
           res.status(200).json(result);
         }
         else{
-          console.log(err)
           res.sendStatus(400);
         }
         repository.disconnect();

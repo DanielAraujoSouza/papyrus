@@ -13,7 +13,7 @@ require('dotenv-safe')
 const mongoClient = require("mongodb").MongoClient;
 mongoClient.connect(process.env.MONGO_CONNECTION, { useNewUrlParser: true, useUnifiedTopology: true })
 .then(conn => {
-  console.log(`Server started on port ${process.env.SERVER_PORT}`);
+  console.log(`Server started on port ${process.env.PORT}`);
   console.log(`Database Server ${process.env.MONGO_CONNECTION}`);
   global.db = conn.db(process.env.MONGO_DB);
 
@@ -25,7 +25,7 @@ mongoClient.connect(process.env.MONGO_CONNECTION, { useNewUrlParser: true, useUn
    * Get port from environment and store in Express.
    */
 
-  const port = normalizePort(process.env.SERVER_PORT || '3000');
+  const port = normalizePort(process.env.PORT || '3000');
   app.set('port', port);
 
   /**

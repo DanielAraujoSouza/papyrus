@@ -4,6 +4,6 @@ const server = require("./server/server");
 const repository = require("./repository/repository");
 
 server.start(apiV1, repository, (err, app) => { 
-  console.log(`Server started on port ${process.env.SERVER_PORT}`);
+  console.log(`Server started on port ${process.env.PORT}`);
   console.log(`Database Server ${process.env.MONGO_CONNECTION}`);
 });

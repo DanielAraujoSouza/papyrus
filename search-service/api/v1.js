@@ -15,7 +15,6 @@ module.exports = (router) => {
     else if (searchType === 'author') {
       url = `${process.env.AUTHORS_SERVICE}`;
     }
-    console.log("AQ >> " + `${url}/find/${searchName}/${page}`)
     
     adapterGet(`${url}/find/${searchName}/${page}`, res, (res, resp)  => {
       res.header(resp.headers);

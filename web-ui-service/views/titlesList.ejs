@@ -77,18 +77,24 @@
               <% } }); %>
             </span>
           <% } else { 
-            const dateFormat = { day: "2-digit", month: "2-digit", year: "numeric" };
 
-            let dateBirth = new Date(result.date_of_birth)
-            .toLocaleDateString('pt-BR', dateFormat);
-            dateBirth = `${dateBirth.split("-")[2]}-${dateBirth.split("-")[1]}-${dateBirth.split("-")[0]}`;
+            if (result.date_of_birth){
+              const dt = new Date(result.date_of_birth)
+              const day = dt.getDate();
+              const month = dt.getMonth() + 1;
+              const year = dt.getFullYear();
+              result.date_of_birth = `${day < 10 ? `0${day}` : day}-${month < 10 ? `0${month}` : month}-${year}`;
+            }
 
-            let dateDeath = new Date(result.date_of_death)
-              .toLocaleDateString('pt-BR', dateFormat);              
-            dateDeath = `${dateDeath.split("-")[2]}-${dateDeath.split("-")[1]}-${dateDeath.split("-")[0]}`;
-
+            if (result.date_of_death){
+              const dt = new Date(result.date_of_death)
+              const day = dt.getDate();
+              const month = dt.getMonth() + 1;
+              const year = dt.getFullYear();
+              result.date_of_death = `${day < 10 ? `0${day}` : day}-${month < 10 ? `0${month}` : month}-${year}`;
+            }
             %>
-            <span> ✶ <%= dateBirth %> <%= result.date_of_death && ` - † ${dateDeath}` %>  </span>
+            <span> ✶ <%= result.date_of_birth %> <%= result.date_of_death && ` - † ${result.date_of_death}` %>  </span>
           <% } %>
           <p><%= result.summary || result.description %></p>
         </div>

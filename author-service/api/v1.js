@@ -25,13 +25,27 @@ module.exports = (router, repository) => {
 
   // Pesquisa autores
   router.get('/find/(:searchName)?/:page?', (req, res, next) => {
+    // Contornando supressão de parametros do Azure
+    const params = req.originalUrl.split('/');
+    let page = 1;
+    let searchParam = "";
+    if (RegExp("^/authors/find/[^/]*/[0-9]*$").test(req.originalUrl)){
+      searchParam = params[3];
+      page = params[4];
+    }
+    else if (RegExp("^/authors/find/[0-9]*$").test(req.originalUrl)){
+      searchParam = "";
+      page = params[3];
+    }
+    else if (RegExp("^/authors/find/[^/]*$").test(req.originalUrl)){
+      searchParam = params[3];
+    }
 
-    const page = parseInt(req.params.page) || 1;
-    const param = req.params.searchName || "";
+    page = page || 1;
+    const type = req.params.type === 'ebook' ? 'ebook' : 'printed';
 
-    repository.findAuthor(param, page, (err, authors) => {
+    repository.findAuthor(searchParam, page, (err, authors) => {
       if (err) { return next(err); }
-
       if (authors){
         res.status(201).json(authors[0]);
       }
@@ -50,13 +64,11 @@ module.exports = (router, repository) => {
       comment_text:  req.body.comment_text,
       date: Date.now()
     };
-    console.log(newComment)
     repository.insertAuthorCommentary(req.params.authorID, newComment, (err, author) => {
       if (!err && author){
         res.status(201).json(newComment);
       }
       else{
-        console.log(err)
         res.sendStatus(400);
       }
       repository.disconnect();
@@ -71,12 +83,9 @@ module.exports = (router, repository) => {
     else {
       repository.getCommentaryById(req.params.authorID, req.params.commentID, (err, infos) => {
         if (!err && infos){
-          console.log('commentary')
-          console.log(infos)
           res.status(201).json(infos.commentaries[0]);
         }
         else{
-          console.log(err)
           res.sendStatus(400);
         }
         repository.disconnect();
@@ -92,12 +101,9 @@ module.exports = (router, repository) => {
     else {
       repository.removeCommentaryById(req.params.authorID, req.params.commentID, (err, infos) => {
         if (!err && infos){
-          console.log('commentary')
-          console.log(infos)
           res.status(201).json(infos);
         }
         else {
-          console.log(err)
           res.sendStatus(400);
         }
         repository.disconnect();
@@ -166,7 +172,6 @@ module.exports = (router, repository) => {
           res.status(200).json(result);
         }
         else{
-          console.log(err)
           res.sendStatus(400);
         }
         repository.disconnect();
