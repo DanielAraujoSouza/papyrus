@@ -1,0 +1,37 @@
+{
+  "name": "api-gateway",
+  "version": "1.0.0",
+  "description": "",
+  "author": "Daniel Araújo",
+  "main": "app.js",
+  "scripts": {
+    "start": "nodemon ./bin/www --ignore data uploads",
+    "serverstart": "DEBUG=api-gateway:* npm run start"
+  },
+  "dependencies": {
+    "@azure/storage-blob": "^12.2.1",
+    "@types/dotenv": "^8.2.0",
+    "axios": "^0.20.0",
+    "bcrypt": "^5.0.0",
+    "body-parser": "^1.19.0",
+    "connect-mongo": "^3.2.0",
+    "cookie-parser": "^1.4.5",
+    "dotenv-safe": "^8.2.0",
+    "express": "^4.17.1",
+    "express-session": "^1.17.1",
+    "helmet": "^4.1.1",
+    "http": "0.0.1-security",
+    "http-errors": "^1.8.0",
+    "into-stream": "^6.0.0",
+    "jsonwebtoken": "^8.5.1",
+    "morgan": "^1.10.0",
+    "multer": "^1.4.2",
+    "passport": "^0.4.1",
+    "passport-local": "^1.0.0",
+    "sharp": "^0.26.2",
+    "uuid": "^8.3.0"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.4"
+  }
+}

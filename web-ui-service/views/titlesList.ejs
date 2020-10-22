@@ -1,0 +1,117 @@
+<%- contentFor('style') %>
+<link rel="stylesheet" type="text/css" href="/stylesheets/titlesList.css" />
+
+<%- contentFor('main') %>
+<div id="search-main-wrapper" class="main-wrapper">
+  <aside>
+    <div class="filters-header"><%= title %></div>
+    <div class="filters-container">
+      <h3>Filtros</h3>
+      <form method="GET">
+        <input type="hidden" name="q" value="<%= searchQuery %>">
+      <div class="filters">
+        <div class="filter">
+          <input type="radio" id="type" name="type" 
+          <% if (contentType === "book") { %>
+          checked
+          <% } %>
+          value="printed" >
+          <span>Livros</span>
+        </div>
+        <div class="filter">
+          <input type="radio" id="type" name="type"
+          <% if (contentType === "ebook") { %>
+            checked
+          <% } %>
+          value="ebook">
+          <span>eBook</span>
+        </div>
+        <div class="filter">
+          <input type="radio" id="type" name="type"
+          <% if (contentType === "author") { %>
+            checked
+          <% } %>
+          value="author">
+          <span>Autores</span>
+        </div>
+      </div>
+      <div class="filter-button-wrapper">
+        <button type="submit" value="Submit">Aplicar</button>
+      </div>
+      </form>
+    </div>
+  </aside>
+  <div class="content">
+    <div class="content-header">
+      <span><%= totalCount %> resultados encontrados</span>
+    </div>
+
+    <% results.forEach((result) => { %>
+    <div class="content-results">
+      <div class="result-container">
+        <div class="result-photo">
+          <% if (result.poster_path !== undefined && result.poster_path) { %>
+            <img src="<%= result.poster_path %>" loading="lazy"/>
+          <% } else { %>
+            <span class="mdi mdi-cancel no-image"></span>
+          <% } %>
+        </div>
+        <div class="result-content">
+          <a href="<%= `/${contentType}/${result._id}` %>"
+            ><h3><%= result.title || result.name %></h3>
+          </a>
+          <% if (result.authors) {%>
+            <span> Autores:
+              <% result.authors.forEach((author, key) => { if (key > 0){  %>
+                  <%= `• ${author.name}` %>
+              <% } else { %>
+                
+                <%= author.name %>
+              <% } }); %>
+            </span>
+            <span> Gênero:
+              <% result.genre.forEach((name, key) => { if (key > 0){  %>
+                <%= `, ${name}` %>
+              <% } else { %>
+                <%= name %>
+              <% } }); %>
+            </span>
+          <% } else { 
+
+            if (result.date_of_birth){
+              const dt = new Date(result.date_of_birth)
+              const day = dt.getDate();
+              const month = dt.getMonth() + 1;
+              const year = dt.getFullYear();
+              result.date_of_birth = `${day < 10 ? `0${day}` : day}-${month < 10 ? `0${month}` : month}-${year}`;
+            }
+
+            if (result.date_of_death){
+              const dt = new Date(result.date_of_death)
+              const day = dt.getDate();
+              const month = dt.getMonth() + 1;
+              const year = dt.getFullYear();
+              result.date_of_death = `${day < 10 ? `0${day}` : day}-${month < 10 ? `0${month}` : month}-${year}`;
+            }
+            %>
+            <span> ✶ <%= result.date_of_birth %> <%= result.date_of_death && ` - † ${result.date_of_death}` %>  </span>
+          <% } %>
+          <p><%= result.summary || result.description %></p>
+        </div>
+      </div>
+    </div>
+    <% }); %>
+    <div class="content-pagination">
+      <% for(var i=1; i <= totalPages; i++) { %> <% if(i == currentPage) {%>
+
+      <a class="current" href="<%= `${paginationPath}${i}?q=${searchQuery}&type=${contentType}` %>">
+        <%= i %>
+      </a>
+      <% } else { %>
+      <a href="<%= `${paginationPath}${i}?q=${searchQuery}&type=${contentType}` %>">
+        <%= i %>
+      </a>
+      <% } %> <% } %>
+    </div>
+  </div>
+</div>
